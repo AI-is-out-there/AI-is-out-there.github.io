@@ -74,7 +74,8 @@ function loadKaggleStats() {
     document.getElementById('notebooksCount').textContent = '15';
     document.getElementById('notebookViews').textContent = '45.2K';
     */
-    
+
+    /*
     fetch('https://www.kaggle.com/denisandrikov')
         .then(response => response.json())
         .then(data => {
@@ -83,4 +84,5 @@ function loadKaggleStats() {
             document.getElementById('datasetViews').textContent = data.datasetViews;
         })
         .catch(error => console.error('Error loading Kaggle stats:', error));
+    */
 }
