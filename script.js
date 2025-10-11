@@ -75,7 +75,7 @@ function loadKaggleStats() {
     document.getElementById('notebookViews').textContent = '45.2K';
     */
     
-    fetch('https://www.kaggle.com/api/v1/users/public-profile/denisandrikov')
+    fetch('https://www.kaggle.com/denisandrikov')
         .then(response => response.json())
         .then(data => {
             document.getElementById('competitionRank').textContent = data.competitionRank;
