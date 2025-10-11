@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Denis Andrikov - Projects</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Denis Andrikov</h1>
+            <p>Data Scientist & Python Developer</p>
+            <div class="social-links">
+                <a href="https://github.com/TAUforPython" target="_blank">GitHub</a>
+                <a href="https://www.kaggle.com/denisandrikov" target="_blank">Kaggle</a>
+                <a href="https://linkedin.com/in/denisandrikov" target="_blank">LinkedIn</a>
+            </div>
+        </div>
+    </header>
+
+    <section class="about">
+        <div class="container">
+            <h2>About Me</h2>
+            <div class="profile-content">
+                <img src="https://www.kaggle.com/denisandrikov" alt="Profile Picture" id="profilePic">
+                <div class="bio">
+                    <p>Data science professional with expertise in Python, machine learning, and statistical analysis. Active contributor to open-source projects and Kaggle competitions.</p>
+                    <p>Specializing in predictive modeling, data visualization, and developing scalable analytics solutions.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="repositories">
+        <div class="container">
+            <h2>GitHub Projects</h2>
+            <div id="repo-container">
+                <!-- Repositories will be loaded here -->
+            </div>
+            <div class="update-info">
+                <p>Last updated: <span id="lastUpdate">Loading...</span></p>
+                <p>Repositories are automatically updated every 24 hours</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="kaggle-stats">
+        <div class="container">
+            <h2>Kaggle Profile</h2>
+            <div class="kaggle-content">
+                <div class="kaggle-info">
+                    <h3>Competition Performance</h3>
+                    <p>Current Rank: <span id="competitionRank">-</span></p>
+                    <p>Best Finish: <span id="bestFinish">-</span></p>
+                    <p>Points: <span id="competitionPoints">-</span></p>
+                </div>
+                <div class="kaggle-info">
+                    <h3>Dataset Contributions</h3>
+                    <p>Datasets: <span id="datasetsCount">-</span></p>
+                    <p>Views: <span id="datasetViews">-</span></p>
+                </div>
+                <div class="kaggle-info">
+                    <h3>Notebooks</h3>
+                    <p>Public Notebooks: <span id="notebooksCount">-</span></p>
+                    <p>Total Views: <span id="notebookViews">-</span></p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2023 Denis Andrikov | Updated: <span id="footerDate"></span></p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
