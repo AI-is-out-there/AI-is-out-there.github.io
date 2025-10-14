@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', function() {
 // --- ORCID Functions ---
 
 // Use the provided ORCID ID
-const ORCID_ID = '0000-0003-0359-0897'; 
+const ORCID_ID = '0000-0003-0359-0897';
 
 async function fetchOrcidWorks() {
 
