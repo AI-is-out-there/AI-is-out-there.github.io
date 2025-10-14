@@ -23,7 +23,7 @@ const ORCID_ID = '0000-0003-0359-0897';
 
 async function fetchOrcidWorks() {
     // Check if ORCID ID is set before attempting to fetch
-    if (!ORCID_ID || ORCID_ID === '0000-0003-0359-0897') {
+    if (!ORCID_ID) {
         document.getElementById('papers-container').innerHTML = 
             '<p class="error">ORCID ID not configured. Please update the script with your ORCID iD.</p>';
         return;
