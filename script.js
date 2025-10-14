@@ -22,12 +22,6 @@ document.addEventListener('DOMContentLoaded', function() {
 const ORCID_ID = '0000-0003-0359-0897'; 
 
 async function fetchOrcidWorks() {
-    // Check if ORCID ID is set before attempting to fetch
-    if (!ORCID_ID || ORCID_ID === '0000-0003-0359-0897') {
-        document.getElementById('papers-container').innerHTML = 
-            '<p class="error">ORCID ID not configured.</p>';
-        return;
-    }
 
     const container = document.getElementById('papers-container');
     container.innerHTML = '<p class="loading">Loading publications...</p>';
