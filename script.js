@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', function() {
 // --- ORCID Functions ---
 
 // Replace 'YOUR-ORCID-ID' with your actual ORCID iD (e.g., '0000-0000-0000-0000')
-const ORCID_ID = 'YOUR-ORCID-ID'; 
+const ORCID_ID = '0000-0003-0359-0897'; 
 
 async function fetchOrcidWorks() {
     // Check if ORCID ID is set before attempting to fetch
