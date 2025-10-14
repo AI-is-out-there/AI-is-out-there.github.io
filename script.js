@@ -22,42 +22,208 @@ document.addEventListener('DOMContentLoaded', function() {
 const ORCID_ID = '0000-0003-0359-0897'; 
 
 async function fetchOrcidWorks() {
+    // Check if ORCID ID is set before attempting to fetch
+    if (!ORCID_ID || ORCID_ID === 'YOUR-ORCID-ID') {
+        document.getElementById('papers-container').innerHTML = 
+            '<p class="error">ORCID ID not configured.</p>';
+        return;
+    }
 
     const container = document.getElementById('papers-container');
     container.innerHTML = '<p class="loading">Loading publications...</p>';
 
     try {
-        // Attempt to fetch using the ORCID public API v3.0 summary endpoint
-        // This endpoint provides a summary of works and is more likely to be CORS-enabled
-        const response = await fetch(`https://pub.orcid.org/v3.0/${ORCID_ID}/activities`, {
-            headers: {
-                'Accept': 'application/json',
-                // ORCID API prefers XML, but JSON is supported
-                // Adding a user agent might sometimes help with public clients
-                'User-Agent': 'Mozilla/5.0 (compatible; ORCID-Display-Script/1.0)'
-            }
-        });
+        // Attempt to fetch the public ORCID page HTML
+        // This is a workaround if the direct API call fails due to CORS
+        const pageUrl = `https://orcid.org/${ORCID_ID}`;
+        const response = await fetch(pageUrl);
 
         if (!response.ok) {
-            throw new Error(`ORCID API Error: ${response.status} ${response.statusText}`);
+            throw new Error(`ORCID Page Error: ${response.status} ${response.statusText}`);
         }
 
-        const data = await response.json();
-        const worksGroups = data['activities:works']?.['group'] || [];
+        const htmlText = await response.text();
         
-        displayPapers(worksGroups);
+        // Attempt to parse the HTML to find publication data
+        // This is fragile and might break if ORCID changes their HTML structure
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(htmlText, 'text/html');
+
+        // Look for elements that might contain work information
+        // ORCID pages often use structured data or specific classes
+        const worksData = extractWorksFromHtml(doc);
+
+        if (worksData && worksData.length > 0) {
+             displayPapersFromParsedData(worksData);
+        } else {
+             // If parsing the HTML fails, inform the user
+             throw new Error("Could not extract publication data from the ORCID page.");
+        }
+
     } catch (error) {
         console.error('Error fetching ORCID works:', error);
-        document.getElementById('papers-container').innerHTML = 
-            `<p class="error">Error loading publications: ${error.message}<br>Please check your ORCID ID or try again later.</p>`;
+        // Fallback: Try the original API method if HTML parsing failed
+        console.log("Attempting fallback API call...");
+        try {
+            await fetchOrcidWorksApi();
+        } catch (apiError) {
+            console.error('Both HTML parsing and API call failed:', apiError);
+            document.getElementById('papers-container').innerHTML = 
+                `<p class="error">Error loading publications: ${apiError.message}<br>Please check your ORCID ID or try again later.</p>`;
+        }
     }
 }
 
+// Fallback API call function
+async function fetchOrcidWorksApi() {
+    const response = await fetch(`https://pub.orcid.org/v3.0/${ORCID_ID}/activities`, {
+        headers: {
+            'Accept': 'application/json',
+            'User-Agent': 'Mozilla/5.0 (compatible; ORCID-Display-Script/1.0)'
+        }
+    });
+
+    if (!response.ok) {
+        throw new Error(`ORCID API Error: ${response.status} ${response.statusText}`);
+    }
+
+    const data = await response.json();
+    const worksGroups = data['activities:works']?.['group'] || [];
+    displayPapers(worksGroups); // Use the original display function for API data
+}
+
+// Attempt to extract work information from the fetched HTML
+function extractWorksFromHtml(doc) {
+    // This is a heuristic attempt and might need adjustment based on ORCID's actual HTML
+    // Look for elements that might represent works (often divs with specific roles or classes)
+    const workElements = doc.querySelectorAll('[data-test="work"]');
+    if (workElements.length > 0) {
+        console.log("Found works via [data-test='work'] selector");
+        return Array.from(workElements).map(el => {
+            // Try to find title, authors, date, etc. within each element
+            const titleEl = el.querySelector('[data-test="title"]');
+            const authorsEl = el.querySelector('[data-test="author"]');
+            const dateEl = el.querySelector('[data-test="date"]');
+            const journalEl = el.querySelector('[data-test="journal"]');
+            const linkEl = el.querySelector('a'); // Might be the title link or an external link
+
+            return {
+                title: titleEl ? titleEl.textContent.trim() : 'Untitled Work',
+                authors: authorsEl ? authorsEl.textContent.trim() : '',
+                date: dateEl ? dateEl.textContent.trim() : '',
+                journal: journalEl ? journalEl.textContent.trim() : '',
+                url: linkEl ? linkEl.href : ''
+            };
+        });
+    }
+
+    // Alternative: Look for structured data in <script> tags (JSON-LD)
+    const scriptTags = doc.querySelectorAll('script[type="application/ld+json"]');
+    for (const script of scriptTags) {
+        try {
+            const structuredData = JSON.parse(script.textContent);
+            // Check if it contains work-related data
+            if (structuredData && Array.isArray(structuredData)) {
+                 const works = structuredData.filter(item => 
+                     item['@type'] === 'ScholarlyArticle' || 
+                     item['@type'] === 'CreativeWork' ||
+                     item['@type'] === 'PublicationIssue' // Sometimes used
+                 );
+                 if (works.length > 0) {
+                      console.log("Found works in JSON-LD structured data");
+                      return works; // Return the structured data objects
+                 }
+            }
+        } catch (e) {
+            console.warn("Could not parse structured data script:", e);
+            // Continue to next script tag if parsing fails
+        }
+    }
+
+    // If no specific selectors work, try a general search for elements that look like works
+    // This is very fragile
+    const genericWorkSelectors = [
+        'div.work', 'section.work', 'li.work', 
+        '.orcid-works li', '.work-item', '.result-item'
+    ];
+    for (const selector of genericWorkSelectors) {
+        const genericElements = doc.querySelectorAll(selector);
+        if (genericElements.length > 0) {
+             console.log(`Found potential works via generic selector: ${selector}`);
+             // For generic elements, we'd need a more complex parsing logic
+             // which is difficult without knowing the exact structure beforehand.
+             // This is a basic example assuming a title might be an h3 or h4.
+             return Array.from(genericElements).map(el => {
+                 const titleEl = el.querySelector('h3, h4, .title, [data-title]');
+                 return {
+                     title: titleEl ? titleEl.textContent.trim() : 'Untitled Work (Generic)',
+                     authors: '',
+                     date: '',
+                     journal: '',
+                     url: '' // Would need to find a link within the element
+                 };
+             });
+        }
+    }
+
+    console.warn("Could not find works using common selectors or structured data.");
+    return null; // Return null if nothing is found
+}
+
+
+// Display function for data extracted from HTML parsing
+function displayPapersFromParsedData(worksDataArray) {
+    const container = document.getElementById('papers-container');
+    
+    if (!worksDataArray || worksDataArray.length === 0) {
+        container.innerHTML = '<p>No publications found in ORCID profile (parsed from HTML).</p>';
+        return;
+    }
+
+    const papersHTML = worksDataArray.map(work => {
+        // Handle data based on its source (API object vs. parsed HTML object vs. JSON-LD)
+        let title = 'Untitled Work';
+        let authors = '';
+        let date = '';
+        let journal = '';
+        let url = '';
+
+        if (work['@type']) { // Likely JSON-LD
+            title = work.name || work.headline || work.title || title;
+            authors = Array.isArray(work.author) 
+                ? work.author.map(a => a.name || a).join(', ') 
+                : (work.author?.name || work.author || authors);
+            date = work.datePublished || work.dateCreated || date;
+            journal = work.isPartOf?.name || work.inDefinedTermSet || journal;
+            url = work.url || url;
+        } else { // Likely parsed HTML object
+            title = work.title || title;
+            authors = work.authors || authors;
+            date = work.date || date;
+            journal = work.journal || journal;
+            url = work.url || url;
+        }
+
+        return `
+            <div class="paper-item">
+                <div class="paper-title">
+                    ${url ? `<a href="${url}" target="_blank">${title}</a>` : title}
+                </div>
+                ${authors ? `<div class="paper-authors">${authors}</div>` : ''}
+                ${journal || date ? `<div class="paper-details">${journal}${journal && date ? ' | ' : ''}${date}</div>` : ''}
+            </div>
+        `;
+    }).join('');
+    
+    container.innerHTML = papersHTML;
+}
+
+// Original display function for API data (remains the same)
 function displayPapers(worksGroupsArray) {
     const container = document.getElementById('papers-container');
     
     if (!worksGroupsArray || worksGroupsArray.length === 0) {
-        container.innerHTML = '<p>No publications found in ORCID profile.</p>';
+        container.innerHTML = '<p>No publications found in ORCID profile (API).</p>';
         return;
     }
 
@@ -118,7 +284,7 @@ function displayPapers(worksGroupsArray) {
     if (papersHTML) {
         container.innerHTML = papersHTML;
     } else {
-        container.innerHTML = '<p>No publication summaries found in ORCID profile.</p>';
+        container.innerHTML = '<p>No publication summaries found in ORCID profile (API).</p>';
     }
 }
 
