@@ -22,66 +22,75 @@ document.addEventListener('DOMContentLoaded', function() {
 const ORCID_ID = '0000-0003-0359-0897';
 
 // Main function to fetch ORCID works using the Public Record XML API
+
+
+/********************************************************************
+ *  ORCID – clean API-only fetcher
+ *  Endpoint: https://pub.orcid.org/v3.0/{ORCID}/activities
+ *  No HTML scraping, no BibTeX, no CORS proxy, no API key
+ ********************************************************************/
+const ORCID_ID = '0000-0003-0359-0897';
+
 async function fetchOrcidWorks() {
-    const container = document.getElementById('papers-container');
-    container.innerHTML = '<p class="loading">Loading publications...</p>';
+  const box = document.getElementById('papers-container');
+  box.innerHTML = '<p class="loading">Loading publications…</p>';
 
-    try {
-        // Construct the Public Record XML API URL correctly
-        // This is the standard way to get the full public record as XML
-        const apiUrl = `https://orcid.org/${ORCID_ID}/public-record.xml`;
+  try {
+    const res = await fetch(`https://pub.orcid.org/v3.0/${ORCID_ID}/activities`, {
+      headers: { Accept: 'application/json' }
+    });
+    if (!res.ok) throw new Error(`ORCID API ${res.status} – ${res.statusText}`);
 
-        console.log("Fetching ORCID XML from:", apiUrl); // Debug log
+    const data = await res.json();
+    const groups = data?.['activities:works']?.group ?? [];
+    if (!groups.length) { box.innerHTML = '<p>No publications found.</p>'; return; }
 
-        const response = await fetch(apiUrl, {
-            headers: {
-                'Accept': 'application/xml', // Request XML format
-                // Optional: Add a User-Agent if the server is picky, though browsers usually add their own
-                // 'User-Agent': 'Mozilla/5.0 (compatible; ORCID-Display-Script/1.0)'
-            }
-        });
+    /* ---- flatten groups into readable cards ---- */
+    const html = groups.map(g => {
+      const s = g['work-summary']?.[0];
+      if (!s) return '';
 
-        if (!response.ok) {
-            if (response.status === 404) {
-                 throw new Error(`ORCID public record XML not found for ID: ${ORCID_ID}. Profile might be private or the ID is incorrect.`);
-            } else if (response.status === 401 || response.status === 403) {
-                 throw new Error('Access to ORCID public record XML denied (Profile is private or restricted).');
-            } else {
-                 throw new Error(`ORCID XML API Error: ${response.status} ${response.statusText}`);
-            }
-        }
+      const title = s['title']?.['title']?.value || 'Untitled';
+      const journal = s['journal-title']?.value || '';
+      const date  = [
+        s['publication-date']?.year?.value,
+        s['publication-date']?.month?.value?.padStart(2,'0'),
+        s['publication-date']?.day?.value?.padStart(2,'0')
+      ].filter(Boolean).join('-');
 
-        const xmlText = await response.text();
-        console.log("Fetched ORCID XML, length:", xmlText.length); // Debug log
-        // console.log("XML Content:", xmlText); // Uncomment to see raw XML if needed (verbose)
+      // pick first DOI or URL external-id
+      let url = '';
+      const ids = s['work-external-identifiers']?.['work-external-identifier'] ?? [];
+      for (const id of ids) {
+        const type = id['work-external-identifier-type']?.toLowerCase();
+        const val  = id['work-external-identifier-id']?.value;
+        if (!val) continue;
+        if (type === 'doi') { url = `https://doi.org/${val}`; break; }
+        if (type === 'url') { url = val.startsWith('http') ? val : `https://${val}`; }
+      }
 
-        // Parse the XML string
-        const parser = new DOMParser();
-        const xmlDoc = parser.parseFromString(xmlText, 'application/xml');
+      const authors = (s['contributors']?.['contributor'] ?? [])
+                      .map(c => c['credit-name']?.value || 'Unknown')
+                      .join(', ');
 
-        // Check for XML parsing errors
-        const parserError = xmlDoc.querySelector("parsererror");
-        if (parserError) {
-             console.error("XML Parsing Error:", parserError.textContent);
-             throw new Error("Failed to parse the ORCID XML response.");
-        }
+      return `
+        <div class="paper-item">
+          <div class="paper-title">
+            ${url ? `<a href="${url}" target="_blank" rel="noopener">${title}</a>` : title}
+          </div>
+          ${authors ? `<div class="paper-authors">${authors}</div>` : ''}
+          ${journal || date ? `<div class="paper-details">${journal}${journal && date ? ' | ' : ''}${date}</div>` : ''}
+        </div>`;
+    }).filter(Boolean).join('');
 
-        // Extract works data from the XML using the specified tags
-        const worksData = extractWorksFromXml(xmlDoc);
+    box.innerHTML = html || '<p>No displayable publications found.</p>';
 
-        if (worksData && worksData.length > 0) {
-             console.log("Found", worksData.length, "works in XML.");
-             displayPapersFromXmlData(worksData);
-        } else {
-             // If parsing the XML fails or no works are found, inform the user
-             throw new Error("Could not extract publication data from the ORCID XML record (no works found or parsing failed).");
-        }
-
-    } catch (error) {
-        console.error('Error fetching or parsing ORCID XML:', error);
-        container.innerHTML = `<p class="error">Error loading publications: ${error.message}</p>`;
-    }
+  } catch (err) {
+    console.error(err);
+    box.innerHTML = `<p class="error">Error loading publications: ${err.message}</p>`;
+  }
 }
+
 
 // Function to extract work information from the ORCID XML document
 function extractWorksFromXml(xmlDoc) {
