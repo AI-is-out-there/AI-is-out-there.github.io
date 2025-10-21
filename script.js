@@ -6,8 +6,8 @@ document.addEventListener('DOMContentLoaded', function() {
     // Load Kaggle stats
     loadKaggleStats();
 
-    // Load ORCID publications
-    fetchOrcidWorks(); // Now calls the API directly
+    // Load ORCID publications by fetching and parsing the public HTML page
+    fetchOrcidWorksFromHtml();
 
     // Set footer date
     document.getElementById('footerDate').textContent = new Date().toLocaleDateString();
@@ -19,118 +19,169 @@ document.addEventListener('DOMContentLoaded', function() {
 // --- ORCID Functions ---
 
 // Use the provided ORCID ID
-const ORCID_ID = '0000-0003-0359-0897'; // Fixed: Removed spaces
+const ORCID_ID = '0000-0003-0359-0897';
 
-// Main function to fetch ORCID works using the API
-async function fetchOrcidWorks() {
+// Main function to fetch ORCID works by parsing the public HTML page
+async function fetchOrcidWorksFromHtml() {
     const container = document.getElementById('papers-container');
     container.innerHTML = '<p class="loading">Loading publications...</p>';
 
     try {
-        // Construct the API URL correctly - Fixed: Removed space
-        const apiUrl = `https://pub.orcid.org/v3.0/${ORCID_ID}/activities`; // Fixed: Removed space
+        // Construct the public ORCID profile URL
+        const profileUrl = `https://orcid.org/${ORCID_ID}`;
 
-        const response = await fetch(apiUrl, {
-            headers: {
-                'Accept': 'application/json',
-                // 'User-Agent': 'Mozilla/5.0 (compatible; ORCID-Display-Script/1.0)' // Optional but good practice
-            }
-        });
-
+        const response = await fetch(profileUrl);
         if (!response.ok) {
-            // Handle potential HTTP errors (4xx, 5xx)
-            if (response.status === 404) {
-                 throw new Error(`ORCID record or activities not found for ID: ${ORCID_ID}`);
-            } else if (response.status === 401 || response.status === 403) {
-                 throw new Error('Access to ORCID data denied (Private/Restricted).');
-            } else {
-                 throw new Error(`ORCID API Error: ${response.status} ${response.statusText}`);
-            }
+            throw new Error(`Error fetching ORCID profile page: ${response.status} ${response.statusText}`);
         }
 
-        const data = await response.json();
-        // console.log("Fetched ORCID Data:", data); // Optional: Log the raw data for debugging
+        const htmlText = await response.text();
+        // console.log("Fetched ORCID HTML:", htmlText); // Optional: Log HTML for debugging
 
-        const worksGroups = data['activities:works']?.['group'] || [];
-        displayPapers(worksGroups); // Pass data to the display function
+        // Parse the HTML text
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(htmlText, 'text/html');
+
+        // Attempt to find structured data (JSON-LD) within <script> tags
+        const worksData = extractWorksFromJsonLd(doc);
+
+        if (worksData && worksData.length > 0) {
+            console.log("Found works data in JSON-LD:", worksData); // Debug log
+            displayPapersFromParsedData(worksData);
+        } else {
+            // If JSON-LD parsing fails, inform the user
+            throw new Error("Could not extract publication data from the ORCID page HTML (no JSON-LD found or parsing failed).");
+        }
 
     } catch (error) {
-        console.error('Error fetching ORCID works:', error);
+        console.error('Error fetching or parsing ORCID works:', error);
         container.innerHTML = `<p class="error">Error loading publications: ${error.message}</p>`;
     }
 }
 
+// Attempt to extract work information from JSON-LD scripts embedded in the HTML
+function extractWorksFromJsonLd(doc) {
+    const scriptTags = doc.querySelectorAll('script[type="application/ld+json"]');
+    for (const script of scriptTags) {
+        try {
+            const data = JSON.parse(script.textContent);
+            console.log("Found JSON-LD script:", data); // Debug log
 
-// Display function for data fetched from the ORCID API (v3.0)
-function displayPapers(worksGroupsArray) {
+            // ORCID pages often embed structured data. Look for works related to the person.
+            // The structure can vary, but often the top level is a Person object with 'works' or 'hasPublications'.
+            // Works might also be directly in an array at the top level or nested.
+            // Schema.org vocabulary is used [[1]].
+            if (Array.isArray(data)) {
+                 // Check if the array contains work objects
+                 const works = data.filter(item =>
+                     item['@type'] === 'ScholarlyArticle' ||
+                     item['@type'] === 'CreativeWork' ||
+                     item['@type'] === 'Thesis' ||
+                     item['@type'] === 'Book' ||
+                     item['@type'] === 'Chapter' ||
+                     item['@type'] === 'Dataset' ||
+                     item['@type'] === 'Poster' ||
+                     item['@type'] === 'Presentation' ||
+                     item['@type'] === 'SoftwareSourceCode' ||
+                     item['@type'] === 'ConferenceProceedings' ||
+                     item['@type'] === 'Report' ||
+                     item['@type'] === 'Review' ||
+                     item['@type'] === 'Preprint' ||
+                     // Add other relevant types as needed
+                     (item['@type'] && item['@type'].includes('Publication')) // General catch for publication types
+                 );
+                 if (works.length > 0) {
+                      console.log("Found works in JSON-LD array");
+                      return works;
+                 }
+            } else if (data['@type'] === 'Person' || data['@type'] === 'Organization') {
+                 // Check if it's a Person/Organization object and has works
+                 const works = data.hasPublications || data.works || data.about?.works; // Common property names for works
+                 if (works && Array.isArray(works)) {
+                      console.log("Found works linked from Person/Organization JSON-LD");
+                      return works;
+                 }
+            }
+            // Check the root object itself if it's a single work
+            else if (data['@type'] && (
+                     data['@type'] === 'ScholarlyArticle' ||
+                     data['@type'] === 'CreativeWork' ||
+                     data['@type'] === 'Thesis' ||
+                     // ... other types
+                     data['@type'].includes('Publication')
+                 )) {
+                 console.log("Found single work in JSON-LD root");
+                 return [data]; // Return as an array for consistency
+            }
+
+        } catch (e) {
+            console.warn("Could not parse JSON-LD script:", e);
+            // Continue to next script tag if parsing fails
+        }
+    }
+
+    console.warn("Could not find works using JSON-LD structured data.");
+    return null; // Return null if no structured data containing works is found
+}
+
+
+// Display function for data extracted from HTML parsing (specifically JSON-LD)
+function displayPapersFromParsedData(worksDataArray) {
     const container = document.getElementById('papers-container');
 
-    if (!worksGroupsArray || worksGroupsArray.length === 0) {
-        container.innerHTML = '<p>No publications found in ORCID profile.</p>';
+    if (!worksDataArray || worksDataArray.length === 0) {
+        container.innerHTML = '<p>No publications found in ORCID profile (parsed from HTML JSON-LD).</p>';
         return;
     }
 
-    // Process the works groups to extract summary information for display
-    const papersHTML = worksGroupsArray.map(group => {
-        // Each group contains multiple works, often representing different versions or sources
-        // We'll take the summary of the first work in the group for display
-        const firstWorkSummary = group['work-summary']?.[0];
-        if (!firstWorkSummary) return ''; // Skip if no summary found
+    const papersHTML = worksDataArray.map(work => {
+        // Handle data based on its source (JSON-LD object structure)
+        let title = work.name || work.headline || work.title || 'Untitled Work';
+        let authors = '';
+        let date = work.datePublished || work.dateCreated || work.publicationDate || work.date || '';
+        let journal = work.isPartOf?.name || work.isPartOf?.headline || work.inDefinedTermSet || work.containerTitle || '';
+        let url = work.url || '';
 
-        // Extract details from the summary object
-        const title = firstWorkSummary['title']?.['title']?.value || 'Untitled Work';
-        const journalTitle = firstWorkSummary['journal-title']?.value || '';
-        const publicationDate = firstWorkSummary['publication-date'];
-        let dateStr = '';
-        if (publicationDate) {
-            const year = publicationDate.year?.value;
-            const month = publicationDate.month?.value?.padStart(2, '0'); // Pad month with leading zero
-            const day = publicationDate.day?.value?.padStart(2, '0'); // Pad day with leading zero
-            // Join non-null parts with '-' to form YYYY-MM-DD or YYYY-MM or just YYYY
-            dateStr = [year, month, day].filter(Boolean).join('-');
-        }
-
-        // Extract external IDs (like DOI, URL) - prioritize URL if available
-        let externalUrl = '';
-        const externalIds = firstWorkSummary['work-external-identifiers']?.['work-external-identifier'] || [];
-        for (const id of externalIds) {
-            const idType = id['work-external-identifier-type'];
-            const idValue = id['work-external-identifier-id']?.value;
-            if (idType === 'DOI' && idValue) {
-                 // Construct the DOI URL - Fixed: Removed space
-                 externalUrl = `https://doi.org/${idValue}`; // Fixed: Removed space
-                 break; // Prefer DOI
-            } else if (idType === 'URL' && idValue) {
-                 externalUrl = idValue; // Fallback to URL
-                 // Ensure it starts with http/https
-                 if (!externalUrl.startsWith('http')) {
-                     externalUrl = 'https://' + externalUrl;
-                 }
+        // Handle authors/contributors which might be an array of objects or strings
+        if (work.author) {
+            if (Array.isArray(work.author)) {
+                 authors = work.author.map(a => a.name || a).join(', ');
+            } else if (typeof work.author === 'object' && work.author.name) {
+                 authors = work.author.name;
+            } else if (typeof work.author === 'string') {
+                 authors = work.author;
             }
+        } else if (work.contributor) { // Check for contributor as well
+             if (Array.isArray(work.contributor)) {
+                 authors = work.contributor.map(c => c.name || c).join(', ');
+             } else if (typeof work.contributor === 'object' && work.contributor.name) {
+                 authors = work.contributor.name;
+             } else if (typeof work.contributor === 'string') {
+                 authors = work.contributor;
+             }
         }
 
-        // Contributors (Authors) - Handle potential undefined contributors array
-        const contributors = firstWorkSummary['contributors']?.['contributor'] || [];
-        const authors = contributors
-            .map(c => c['credit-name']?.value || 'Unknown Author')
-            .join(', ');
+        // Fallback if authors is still empty, check for a simple creator field
+        if (!authors && work.creator) {
+             if (Array.isArray(work.creator)) {
+                 authors = work.creator.map(c => c.name || c).join(', ');
+             } else {
+                 authors = typeof work.creator === 'object' ? work.creator.name || work.creator : work.creator;
+             }
+        }
 
         return `
             <div class="paper-item">
                 <div class="paper-title">
-                    ${externalUrl ? `<a href="${externalUrl}" target="_blank">${title}</a>` : title}
+                    ${url ? `<a href="${url}" target="_blank">${title}</a>` : title}
                 </div>
                 ${authors ? `<div class="paper-authors">${authors}</div>` : ''}
-                ${journalTitle || dateStr ? `<div class="paper-details">${journalTitle}${journalTitle && dateStr ? ' | ' : ''}${dateStr}</div>` : ''}
+                ${journal || date ? `<div class="paper-details">${journal}${journal && date ? ' | ' : ''}${date}</div>` : ''}
             </div>
         `;
-    }).filter(html => html !== '').join(''); // Filter out any empty strings generated by skipped groups
+    }).join('');
 
-    if (papersHTML) {
-        container.innerHTML = papersHTML;
-    } else {
-        container.innerHTML = '<p>No publication summaries found in ORCID profile.</p>';
-    }
+    container.innerHTML = papersHTML;
 }
 
 
@@ -140,7 +191,7 @@ function fetchRepos() {
     const container = document.getElementById('repo-container');
     container.innerHTML = '<p>Loading repositories...</p>';
 
-    // Using GitHub API to fetch repositories - Fixed: Removed trailing space
+    // Using GitHub API to fetch repositories
     fetch('https://api.github.com/users/TAUforPython/repos') // Fixed: Removed trailing space
         .then(response => response.json())
         .then(repos => {
