@@ -3,89 +3,258 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Denis Andrikov - Projects</title>
+    <meta name="description" content="Denis Andrikov — Data Scientist, Python developer, and educator in automatic control theory, machine learning, and BioMed AI.">
+    <title>Denis Andrikov — CV</title>
     <link rel="stylesheet" href="styles.css">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <header>
+    <header class="cv-header">
         <div class="container">
+            <p class="cv-label">Curriculum Vitae</p>
             <h1>Denis Andrikov</h1>
-            <p>Data Scientist & Python Developer</p>
-            <div class="social-links">
-                <a href="https://github.com/TAUforPython" target="_blank">GitHub</a>
-                <a href="https://www.kaggle.com/denisandrikov" target="_blank">Kaggle</a>
-                <a href="https://linkedin.com/in/denisandrikov" target="_blank">LinkedIn</a>
-            </div>
+            <p class="cv-title">Data Scientist · Python Developer · Educator</p>
+            <nav class="contact-links" aria-label="Contact and profiles">
+                <a href="https://orcid.org/0000-0003-0359-0897" target="_blank" rel="noopener">ORCID</a>
+                <a href="https://github.com/TAUforPython" target="_blank" rel="noopener">GitHub</a>
+                <a href="https://www.kaggle.com/denisandrikov" target="_blank" rel="noopener">Kaggle</a>
+                <a href="https://linkedin.com/in/denisandrikov" target="_blank" rel="noopener">LinkedIn</a>
+            </nav>
         </div>
     </header>
 
-    <section class="about">
+    <nav class="cv-nav" aria-label="Page sections">
         <div class="container">
-            <h2>About Me</h2>
-            <div class="profile-content">
-                <img src="https://storage.googleapis.com/kaggle-avatars/images/6828784-kg.png?t=2024-10-09-17-14-20" alt="Profile Picture" id="profilePic">
-                <div class="bio">
-                    <p>Data science professional with expertise in Python, machine learning, and statistical analysis. Active contributor to open-source projects and Kaggle competitions.</p>
-                    <p>Specializing in predictive modeling, data visualization, and developing scalable analytics solutions.</p>
+            <a href="#highlights">Highlights</a>
+            <a href="#about">About</a>
+            <a href="#roadmap">Roadmap</a>
+            <a href="#publications">Publications</a>
+            <a href="#projects">Projects</a>
+            <a href="#kaggle">Kaggle</a>
+        </div>
+    </nav>
+
+    <main>
+        <section id="highlights" class="highlights">
+            <div class="container">
+                <h2>Key Work</h2>
+                <p class="section-lead">Teaching, open education, and applied AI — courses and channels that define my public work.</p>
+                <div class="highlight-grid">
+                    <article class="highlight-card">
+                        <span class="highlight-badge">Video · BioMed AI</span>
+                        <h3><a href="https://rutube.ru/channel/38172356/" target="_blank" rel="noopener">Bauman AI: math + ML</a></h3>
+                        <p>Educational RUTube channel on mathematics, machine learning, and digital medicine — from fuzzy logic and Kalman filters to CNNs, LLMs, wavelets, and ENGEE system modeling.</p>
+                        <ul class="highlight-tags">
+                            <li>76 playlists</li>
+                            <li>Python &amp; data science</li>
+                            <li>BioMed AI &amp; ML</li>
+                        </ul>
+                        <a href="https://rutube.ru/channel/38172356/" class="card-link" target="_blank" rel="noopener">Watch on RUTube →</a>
+                    </article>
+
+                    <article class="highlight-card">
+                        <span class="highlight-badge">Course Portal</span>
+                        <h3><a href="https://www.rudntau.ru" target="_blank" rel="noopener">Theory of Automatic Control</a></h3>
+                        <p>Course hub at RUDN covering mathematical modeling, stability analysis, regulator synthesis, optimization, and nonlinear control — with lecture materials and a linked Python repository.</p>
+                        <ul class="highlight-tags">
+                            <li>Linear &amp; nonlinear systems</li>
+                            <li>Stability &amp; synthesis</li>
+                            <li>Python materials</li>
+                        </ul>
+                        <a href="https://www.rudntau.ru" class="card-link" target="_blank" rel="noopener">Visit rudntau.ru →</a>
+                    </article>
+
+                    <article class="highlight-card">
+                        <span class="highlight-badge">Online Course · Free</span>
+                        <h3><a href="https://stepik.org/course/115666/" target="_blank" rel="noopener">Fundamentals of Automatic Control</a></h3>
+                        <p>Intermediate Stepik course paired with the RUDN portal — structured lessons on control principles, dynamic elements, stability methods, and practical regulator design.</p>
+                        <ul class="highlight-tags">
+                            <li>Stepik · intermediate level</li>
+                            <li>Self-paced learning</li>
+                            <li>Linked to rudntau.ru</li>
+                        </ul>
+                        <a href="https://stepik.org/course/115666/" class="card-link" target="_blank" rel="noopener">Enroll on Stepik →</a>
+                    </article>
+
+                    <article class="highlight-card">
+                        <span class="highlight-badge">Online Course · Free</span>
+                        <h3><a href="https://stepik.org/course/230476/syllabus" target="_blank" rel="noopener">Fundamentals of Machine Learning</a></h3>
+                        <p>Beginner Stepik course on ML foundations with Python — theory, hands-on exercises, and tests covering core algorithms, data preparation, and model evaluation.</p>
+                        <ul class="highlight-tags">
+                            <li>Stepik · beginner level</li>
+                            <li>Python &amp; theory</li>
+                            <li>Interactive tests</li>
+                        </ul>
+                        <a href="https://stepik.org/course/230476/syllabus" class="card-link" target="_blank" rel="noopener">View syllabus on Stepik →</a>
+                    </article>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-
-<!-- ORCID Publications Section Added Here -->
-    <section class="papers-section">
-        <div class="container">
-            <h2>Research Papers</h2>
-            <div id="papers-container">
-                <p class="loading">Loading publications...</p>
-            </div>
-        </div>
-    </section>
-
-    
-
-    <section class="repositories">
-        <div class="container">
-            <h2>GitHub Projects</h2>
-            <div id="repo-container">
-                <!-- Repositories will be loaded here -->
-            </div>
-            <div class="update-info">
-                <p>Last updated: <span id="lastUpdate">Loading...</span></p>
-                <p>Repositories are automatically updated every 24 hours</p>
-            </div>
-        </div>
-    </section>
-
-    <section class="kaggle-stats">
-        <div class="container">
-            <h2>Kaggle Profile</h2>
-            <div class="kaggle-content">
-                <div class="kaggle-info">
-                    <h3>Competition Performance</h3>
-                    <p>Current Rank: <span id="competitionRank">-</span></p>
-                    <p>Best Finish: <span id="bestFinish">-</span></p>
-                    <p>Points: <span id="competitionPoints">-</span></p>
-                </div>
-                <div class="kaggle-info">
-                    <h3>Dataset Contributions</h3>
-                    <p>Datasets: <span id="datasetsCount">-</span></p>
-                    <p>Views: <span id="datasetViews">-</span></p>
-                </div>
-                <div class="kaggle-info">
-                    <h3>Notebooks</h3>
-                    <p>Public Notebooks: <span id="notebooksCount">-</span></p>
-                    <p>Total Views: <span id="notebookViews">-</span></p>
+        <section id="about" class="about">
+            <div class="container">
+                <h2>About</h2>
+                <div class="profile-content">
+                    <img src="https://storage.googleapis.com/kaggle-avatars/images/6828784-kg.png?t=2024-10-09-17-14-20" alt="Denis Andrikov" id="profilePic" width="200" height="200">
+                    <div class="bio">
+                        <p>Data science professional with deep expertise in Python, machine learning, and statistical analysis. I combine research-driven modeling with hands-on engineering — from automatic control theory to biomedical AI applications.</p>
+                        <p>Active educator and open-source contributor: I publish lecture videos, maintain course materials for control systems, and compete on Kaggle. My work bridges rigorous mathematics with practical, deployable analytics.</p>
+                        <dl class="skills-list">
+                            <div>
+                                <dt>Core skills</dt>
+                                <dd>Python · Machine Learning · Statistical Analysis · Control Theory · Data Visualization</dd>
+                            </div>
+                            <div>
+                                <dt>Domains</dt>
+                                <dd>Digital Medicine · Predictive Modeling · System Identification · Time-Series Analysis</dd>
+                            </div>
+                        </dl>
+                    </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
+
+        <section id="roadmap" class="roadmap">
+            <div class="container">
+                <h2>Scientific Roadmap</h2>
+                <p class="section-lead">Research trajectory derived from my <a href="https://orcid.org/0000-0003-0359-0897" target="_blank" rel="noopener">ORCID record</a> — from robust control engineering to explainable AI in digital medicine.</p>
+
+                <div class="roadmap-profile">
+                    <div class="roadmap-credential">
+                        <span class="credential-label">Education</span>
+                        <p>PhD, Informatics &amp; Control Theory — Bauman Moscow State Technical University (1998–2007)</p>
+                    </div>
+                    <div class="roadmap-credential">
+                        <span class="credential-label">Affiliations</span>
+                        <p>Lecturer, Digital Medicine &amp; Healthcare AI — Sechenov University (2025–)</p>
+                        <p>Tutor, Engineering Academy — RUDN University (2005–)</p>
+                    </div>
+                    <div class="roadmap-credential">
+                        <span class="credential-label">Research keywords</span>
+                        <p class="keyword-pills">
+                            <span>Robust control</span>
+                            <span>EEG</span>
+                            <span>Digital medicine</span>
+                            <span>Explainable AI</span>
+                        </p>
+                    </div>
+                </div>
+
+                <ol class="roadmap-timeline">
+                    <li class="roadmap-phase">
+                        <div class="phase-marker" aria-hidden="true"></div>
+                        <div class="phase-content">
+                            <span class="phase-period">1998–2017 · Foundations</span>
+                            <h3>Robust Control &amp; System Engineering</h3>
+                            <p>Doctoral training and early applied work in automatic control — multi-mode dynamics, stabilizer design, and regulator synthesis for complex mechanical systems.</p>
+                            <ul class="phase-works">
+                                <li>Control design of ship robust active rolling stabilizer (2017)</li>
+                                <li>Flat wheel braking control with rolling, sliding, and locking modes (2017)</li>
+                            </ul>
+                        </div>
+                    </li>
+
+                    <li class="roadmap-phase">
+                        <div class="phase-marker" aria-hidden="true"></div>
+                        <div class="phase-content">
+                            <span class="phase-period">2021–2022 · Pivot</span>
+                            <h3>Biomedical Signals &amp; Epilepsy Detection</h3>
+                            <p>Shift toward EEG analysis and machine learning for neurological diagnostics — linking physical dynamics with statistical precursors of epileptic events.</p>
+                            <ul class="phase-works">
+                                <li>Noise amplification precedes extreme epileptic events on human EEG — <em>Physical Review E</em> (2021)</li>
+                                <li>Extreme value theory inspires explainable ML for seizure detection — <em>Scientific Reports</em> (2022)</li>
+                                <li>ML methods for outlier detection in epileptic EEG (2022)</li>
+                            </ul>
+                        </div>
+                    </li>
+
+                    <li class="roadmap-phase">
+                        <div class="phase-marker" aria-hidden="true"></div>
+                        <div class="phase-content">
+                            <span class="phase-period">2023–2024 · Expansion</span>
+                            <h3>Digital Medicine &amp; Physiological Modeling</h3>
+                            <p>Broadening from epilepsy to full digital-medicine stack — bio-artificial organs, cardiogram processing, cognitive-load EEG, and neuroadaptive educational systems.</p>
+                            <ul class="phase-works">
+                                <li>Robust algorithms for biocompatible artificial liver devices (2023)</li>
+                                <li>Evaluation of unsupervised anomaly detection for epileptic EEG — <em>Applied Sciences</em> (2023)</li>
+                                <li>Two-stage outlier detection + deep learning for seizure detection — <em>IEEE Access</em> (2024)</li>
+                                <li>Open-loop neuroadaptive system for enhancing student cognition — <em>IEEE Access</em> (2024)</li>
+                                <li>Mathematical model of a bio-artificial liver with PID control (2024)</li>
+                            </ul>
+                        </div>
+                    </li>
+
+                    <li class="roadmap-phase">
+                        <div class="phase-marker" aria-hidden="true"></div>
+                        <div class="phase-content">
+                            <span class="phase-period">2025–2026 · Current focus</span>
+                            <h3>Explainable AI &amp; Clinical Translation</h3>
+                            <p>Integrating open-source ML frameworks with interpretable deep learning for ECG/EEG time series — moving from detection to biomarker discovery and clinical-ready pipelines.</p>
+                            <ul class="phase-works">
+                                <li>Open-source ML framework algorithms for biophysical models — <em>EPJ Special Topics</em> (2025)</li>
+                                <li>Stochastic methods, wavelets &amp; SVM for EEG study (2025)</li>
+                                <li>Digital modelling of low-frequency ECG signal denoising (2025)</li>
+                                <li>CNN interpretability framework discovers new epileptic biomarkers — <em>Int. J. Neural Systems</em> (2026)</li>
+                                <li>Optimal electrode configuration for brain cognitive-load identification — <em>Digital Diagnostics</em> (2026)</li>
+                            </ul>
+                        </div>
+                    </li>
+                </ol>
+
+                <p class="roadmap-footer">
+                    31 peer-reviewed works on record ·
+                    <a href="https://orcid.org/0000-0003-0359-0897" target="_blank" rel="noopener">ORCID 0000-0003-0359-0897</a>
+                </p>
+            </div>
+        </section>
+
+        <section id="publications" class="papers-section">
+            <div class="container">
+                <h2>Research Publications</h2>
+                <div id="papers-container">
+                    <p class="loading">Loading publications…</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="projects" class="repositories">
+            <div class="container">
+                <h2>GitHub Projects</h2>
+                <div id="repo-container">
+                    <p class="loading">Loading repositories…</p>
+                </div>
+                <p class="update-info">Last updated: <span id="lastUpdate">Loading…</span></p>
+            </div>
+        </section>
+
+        <section id="kaggle" class="kaggle-stats">
+            <div class="container">
+                <h2>Kaggle Profile</h2>
+                <div class="kaggle-content">
+                    <div class="kaggle-info">
+                        <h3>Competition Performance</h3>
+                        <p>Current Rank: <span id="competitionRank">—</span></p>
+                        <p>Best Finish: <span id="bestFinish">—</span></p>
+                        <p>Points: <span id="competitionPoints">—</span></p>
+                    </div>
+                    <div class="kaggle-info">
+                        <h3>Dataset Contributions</h3>
+                        <p>Datasets: <span id="datasetsCount">—</span></p>
+                        <p>Views: <span id="datasetViews">—</span></p>
+                    </div>
+                    <div class="kaggle-info">
+                        <h3>Notebooks</h3>
+                        <p>Public Notebooks: <span id="notebooksCount">—</span></p>
+                        <p>Total Views: <span id="notebookViews">—</span></p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
 
     <footer>
         <div class="container">
-            <p>&copy; 2025 Denis Andrikov | Updated: <span id="footerDate"></span></p>
+            <p>&copy; 2026 Denis Andrikov · Updated <span id="footerDate"></span></p>
         </div>
     </footer>
 
