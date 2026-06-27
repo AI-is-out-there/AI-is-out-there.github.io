@@ -641,6 +641,57 @@ section h2 {
     color: #8a97a5;
 }
 
+.pinned-stats.is-syncing {
+    color: #b0bac5;
+}
+
+.sync-status.is-syncing {
+    color: #8a97a5;
+    font-style: italic;
+}
+
+.sync-status.is-error {
+    color: #c0392b;
+}
+
+@keyframes skeleton-pulse {
+    0%, 100% { opacity: 0.45; }
+    50% { opacity: 0.85; }
+}
+
+.skeleton-card {
+    pointer-events: none;
+}
+
+.skeleton-line {
+    background: linear-gradient(90deg, #e8edf3 0%, #f4f7fb 50%, #e8edf3 100%);
+    background-size: 200% 100%;
+    animation: skeleton-pulse 1.4s ease-in-out infinite;
+    border-radius: 4px;
+    margin-bottom: 0.65rem;
+}
+
+.skeleton-title {
+    height: 1rem;
+    width: 65%;
+}
+
+.skeleton-text {
+    height: 0.75rem;
+    width: 100%;
+}
+
+.skeleton-text.short {
+    width: 80%;
+}
+
+.skeleton-btn {
+    height: 1.75rem;
+    width: 5.5rem;
+    margin-top: 0.5rem;
+    margin-bottom: 0;
+}
+
 .repo-toolbar {
     margin-bottom: 1.25rem;
 }

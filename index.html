@@ -245,8 +245,37 @@
 
                     <div class="pinned-repos">
                         <h3>Featured repositories</h3>
-                        <div class="pinned-grid" id="pinned-repos">
-                            <p class="loading">Loading featured repos…</p>
+                        <div class="pinned-grid" id="pinned-repos" aria-busy="true">
+                            <a href="https://github.com/D2718281828nis/BioMedAI" class="pinned-card" data-pinned="BioMedAI" target="_blank" rel="noopener">
+                                <h4>BioMedAI</h4>
+                                <p>NN, RNN, LSTM, autoencoders, LLM, GNN and other neural networks for biomedicine applications.</p>
+                                <span class="pinned-stats is-syncing">★ — · Jupyter Notebook</span>
+                            </a>
+                            <a href="https://github.com/D2718281828nis/ML-machinelearning_fundamentals" class="pinned-card" data-pinned="ML-machinelearning_fundamentals" target="_blank" rel="noopener">
+                                <h4>ML-machinelearning_fundamentals</h4>
+                                <p>50+ Jupyter notebooks on neural networks, GNNs, transformers, AutoML, time series, and medical AI.</p>
+                                <span class="pinned-stats is-syncing">★ — · Jupyter Notebook</span>
+                            </a>
+                            <a href="https://github.com/D2718281828nis/Math-Wavelets_fundamentals" class="pinned-card" data-pinned="Math-Wavelets_fundamentals" target="_blank" rel="noopener">
+                                <h4>Math-Wavelets_fundamentals</h4>
+                                <p>Wavelet analysis examples — continuous (CWT) and discrete (DWT) transforms for signal processing.</p>
+                                <span class="pinned-stats is-syncing">★ — · Jupyter Notebook</span>
+                            </a>
+                            <a href="https://github.com/D2718281828nis/AutomaticControlTheory-Fundamentals" class="pinned-card" data-pinned="AutomaticControlTheory-Fundamentals" target="_blank" rel="noopener">
+                                <h4>AutomaticControlTheory-Fundamentals</h4>
+                                <p>Core automatic control theory notebooks — models, stability, and regulator design with Python.</p>
+                                <span class="pinned-stats is-syncing">★ — · Jupyter Notebook</span>
+                            </a>
+                            <a href="https://github.com/D2718281828nis/LLM_AI_agents" class="pinned-card" data-pinned="LLM_AI_agents" target="_blank" rel="noopener">
+                                <h4>LLM_AI_agents</h4>
+                                <p>Practical examples of LLM-based AI agents for automated workflows and tool use.</p>
+                                <span class="pinned-stats is-syncing">★ — · Jupyter Notebook</span>
+                            </a>
+                            <a href="https://github.com/D2718281828nis/Fuzzy-fundamentals" class="pinned-card" data-pinned="Fuzzy-fundamentals" target="_blank" rel="noopener">
+                                <h4>Fuzzy-fundamentals</h4>
+                                <p>Introduction to fuzzy logic — membership functions, inference, and regression examples.</p>
+                                <span class="pinned-stats is-syncing">★ — · Jupyter Notebook</span>
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -264,10 +293,15 @@
                     </div>
                 </div>
 
-                <div class="repo-grid" id="repo-container">
-                    <p class="loading">Loading repositories…</p>
+                <div class="repo-grid" id="repo-container" aria-busy="true">
+                    <article class="repo-card skeleton-card" aria-hidden="true"><div class="skeleton-line skeleton-title"></div><div class="skeleton-line skeleton-text"></div><div class="skeleton-line skeleton-text short"></div><div class="skeleton-line skeleton-btn"></div></article>
+                    <article class="repo-card skeleton-card" aria-hidden="true"><div class="skeleton-line skeleton-title"></div><div class="skeleton-line skeleton-text"></div><div class="skeleton-line skeleton-text short"></div><div class="skeleton-line skeleton-btn"></div></article>
+                    <article class="repo-card skeleton-card" aria-hidden="true"><div class="skeleton-line skeleton-title"></div><div class="skeleton-line skeleton-text"></div><div class="skeleton-line skeleton-text short"></div><div class="skeleton-line skeleton-btn"></div></article>
+                    <article class="repo-card skeleton-card" aria-hidden="true"><div class="skeleton-line skeleton-title"></div><div class="skeleton-line skeleton-text"></div><div class="skeleton-line skeleton-text short"></div><div class="skeleton-line skeleton-btn"></div></article>
+                    <article class="repo-card skeleton-card" aria-hidden="true"><div class="skeleton-line skeleton-title"></div><div class="skeleton-line skeleton-text"></div><div class="skeleton-line skeleton-text short"></div><div class="skeleton-line skeleton-btn"></div></article>
+                    <article class="repo-card skeleton-card" aria-hidden="true"><div class="skeleton-line skeleton-title"></div><div class="skeleton-line skeleton-text"></div><div class="skeleton-line skeleton-text short"></div><div class="skeleton-line skeleton-btn"></div></article>
                 </div>
-                <p class="update-info">Last synced: <span id="lastUpdate">Loading…</span></p>
+                <p class="update-info">Last synced: <span id="lastUpdate" class="sync-status is-syncing" aria-live="polite">syncing with GitHub…</span></p>
             </div>
         </section>
 

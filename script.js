@@ -11,9 +11,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Set footer date
     document.getElementById('footerDate').textContent = new Date().toLocaleDateString();
-
-    // Set last update time
-    document.getElementById('lastUpdate').textContent = new Date().toLocaleString();
 });
 
 // --- ORCID Functions ---
@@ -242,10 +239,51 @@ function escapeHtml(text) {
     return div.innerHTML;
 }
 
+function setSyncStatus(state, syncedAt) {
+    const el = document.getElementById('lastUpdate');
+    if (!el) return;
+
+    el.classList.remove('is-syncing', 'is-error');
+
+    if (state === 'syncing') {
+        el.classList.add('is-syncing');
+        el.textContent = 'syncing with GitHub…';
+        el.removeAttribute('title');
+        return;
+    }
+
+    if (state === 'error') {
+        el.classList.add('is-error');
+        el.textContent = 'sync failed — featured repos still available above';
+        el.title = syncedAt ? syncedAt.toLocaleString() : '';
+        return;
+    }
+
+    const date = syncedAt || new Date();
+    el.textContent = date.toLocaleString(undefined, { dateStyle: 'medium', timeStyle: 'short' });
+    el.title = date.toLocaleString();
+}
+
+function updatePinnedStats() {
+    const pinnedRoot = document.getElementById('pinned-repos');
+    if (!pinnedRoot) return;
+
+    PINNED_REPOS.forEach(name => {
+        const repo = allRepos.find(r => r.name === name);
+        const statsEl = pinnedRoot.querySelector(`[data-pinned="${name}"] .pinned-stats`);
+        if (!statsEl || !repo) return;
+
+        statsEl.textContent = `★ ${repo.stargazers_count} · ${repo.language || 'Jupyter Notebook'}`;
+        statsEl.classList.remove('is-syncing');
+    });
+
+    pinnedRoot.setAttribute('aria-busy', 'false');
+}
+
 function fetchRepos() {
     const container = document.getElementById('repo-container');
     const pinnedContainer = document.getElementById('pinned-repos');
-    container.innerHTML = '<p class="loading">Loading repositories…</p>';
+    setSyncStatus('syncing');
 
     fetch(`https://api.github.com/users/${GITHUB_USER}/repos?per_page=100&sort=updated`)
         .then(response => {
@@ -260,38 +298,19 @@ function fetchRepos() {
             const countEl = document.getElementById('github-repo-count');
             if (countEl) countEl.textContent = allRepos.length;
 
-            renderPinnedRepos(pinnedContainer);
+            updatePinnedStats();
             renderRepoGrid(container);
             setupRepoFilters();
+            container.setAttribute('aria-busy', 'false');
+            setSyncStatus('success', new Date());
         })
         .catch(error => {
             console.error('Error fetching repositories:', error);
-            container.innerHTML = '<p class="error">Error loading repositories. Please try again later.</p>';
-            if (pinnedContainer) {
-                pinnedContainer.innerHTML = '<p class="error">Could not load featured repos.</p>';
-            }
+            container.innerHTML = '<p class="error">Could not load the full repository list. Featured repos above remain available.</p>';
+            container.setAttribute('aria-busy', 'false');
+            if (pinnedContainer) pinnedContainer.setAttribute('aria-busy', 'false');
+            setSyncStatus('error');
         });
-}
-
-function renderPinnedRepos(container) {
-    if (!container) return;
-
-    const pinned = PINNED_REPOS
-        .map(name => allRepos.find(r => r.name === name))
-        .filter(Boolean);
-
-    if (!pinned.length) {
-        container.innerHTML = '<p class="loading">No featured repos found.</p>';
-        return;
-    }
-
-    container.innerHTML = pinned.map(repo => `
-        <a href="${repo.html_url}" class="pinned-card" target="_blank" rel="noopener">
-            <h4>${escapeHtml(repo.name)}</h4>
-            <p>${escapeHtml(repo.description || 'Jupyter notebook examples')}</p>
-            <span class="pinned-stats">★ ${repo.stargazers_count} · ${escapeHtml(repo.language || 'Notebook')}</span>
-        </a>
-    `).join('');
 }
 
 function renderRepoGrid(container) {
