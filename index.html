@@ -16,7 +16,7 @@
             <p class="cv-title">Data Scientist · Python Developer · Educator</p>
             <nav class="contact-links" aria-label="Contact and profiles">
                 <a href="https://orcid.org/0000-0003-0359-0897" target="_blank" rel="noopener">ORCID</a>
-                <a href="https://github.com/TAUforPython" target="_blank" rel="noopener">GitHub</a>
+                <a href="https://github.com/D2718281828nis" target="_blank" rel="noopener">GitHub</a>
                 <a href="https://www.kaggle.com/denisandrikov" target="_blank" rel="noopener">Kaggle</a>
                 <a href="https://linkedin.com/in/denisandrikov" target="_blank" rel="noopener">LinkedIn</a>
             </nav>
@@ -219,11 +219,55 @@
 
         <section id="projects" class="repositories">
             <div class="container">
-                <h2>GitHub Projects</h2>
-                <div id="repo-container">
+                <h2>Open Source on GitHub</h2>
+                <p class="section-lead">
+                    <a href="https://github.com/D2718281828nis" target="_blank" rel="noopener">@D2718281828nis</a>
+                    — 45 public Jupyter notebook repositories supporting my courses, research, and BioMed AI explorations.
+                </p>
+
+                <div class="github-overview">
+                    <article class="github-review">
+                        <h3>Repository overview</h3>
+                        <p>Hands-on Python code organized as a teaching and research companion — from control-theory fundamentals to clinical deep learning. Most repos are self-contained notebooks with practical examples aligned with my Stepik courses, RUTube lectures, and ORCID publications.</p>
+                        <ul class="review-themes">
+                            <li><strong>BioMed AI</strong> — NN, RNN, LSTM, autoencoders, GNNs &amp; LLMs for ECG, EEG, genomics, and pain analysis</li>
+                            <li><strong>Control Theory</strong> — modeling, stability, optimal control, phase portraits, and signal denoising</li>
+                            <li><strong>Machine Learning</strong> — 50+ notebooks on GNNs, transformers, AutoML, time series &amp; diffusion models</li>
+                            <li><strong>Math &amp; Signals</strong> — wavelets (CWT/DWT), Fourier analysis, fuzzy logic, and applied statistics</li>
+                            <li><strong>Neuro &amp; LLM</strong> — neuronal dynamics, clinical BERT, radiology tools, and AI agents</li>
+                        </ul>
+                        <p class="github-meta">
+                            <span id="github-repo-count">45</span> repositories ·
+                            primarily Jupyter Notebook ·
+                            <a href="https://github.com/D2718281828nis?tab=repositories" target="_blank" rel="noopener">View all on GitHub →</a>
+                        </p>
+                    </article>
+
+                    <div class="pinned-repos">
+                        <h3>Featured repositories</h3>
+                        <div class="pinned-grid" id="pinned-repos">
+                            <p class="loading">Loading featured repos…</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="repo-toolbar">
+                    <div class="repo-filters" id="repo-filters" role="tablist" aria-label="Filter repositories by topic">
+                        <button type="button" class="repo-filter active" data-filter="all">All</button>
+                        <button type="button" class="repo-filter" data-filter="BioMed AI">BioMed AI</button>
+                        <button type="button" class="repo-filter" data-filter="Control Theory">Control Theory</button>
+                        <button type="button" class="repo-filter" data-filter="Machine Learning">Machine Learning</button>
+                        <button type="button" class="repo-filter" data-filter="Math &amp; Signals">Math &amp; Signals</button>
+                        <button type="button" class="repo-filter" data-filter="Fuzzy Logic">Fuzzy Logic</button>
+                        <button type="button" class="repo-filter" data-filter="Neuroscience">Neuroscience</button>
+                        <button type="button" class="repo-filter" data-filter="LLM &amp; Agents">LLM &amp; Agents</button>
+                    </div>
+                </div>
+
+                <div class="repo-grid" id="repo-container">
                     <p class="loading">Loading repositories…</p>
                 </div>
-                <p class="update-info">Last updated: <span id="lastUpdate">Loading…</span></p>
+                <p class="update-info">Last synced: <span id="lastUpdate">Loading…</span></p>
             </div>
         </section>
 

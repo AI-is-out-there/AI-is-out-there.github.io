@@ -210,55 +210,134 @@ function displayPapersFromXmlData(worksDataArray) {
 }
 
 
-// --- Existing GitHub Functions ---
+// --- GitHub Functions ---
+
+const GITHUB_USER = 'D2718281828nis';
+const PINNED_REPOS = [
+    'BioMedAI',
+    'ML-machinelearning_fundamentals',
+    'Math-Wavelets_fundamentals',
+    'AutomaticControlTheory-Fundamentals',
+    'LLM_AI_agents',
+    'Fuzzy-fundamentals'
+];
+
+let allRepos = [];
+let activeFilter = 'all';
+
+function getRepoCategory(name) {
+    if (name.startsWith('BioMed') || name.startsWith('ECG') || name.includes('ECG')) return 'BioMed AI';
+    if (name.startsWith('AutomaticControl')) return 'Control Theory';
+    if (name.startsWith('ML-') || name.startsWith('ML_')) return 'Machine Learning';
+    if (name.startsWith('Math-')) return 'Math & Signals';
+    if (name.startsWith('Fuzzy')) return 'Fuzzy Logic';
+    if (name.startsWith('Neuro')) return 'Neuroscience';
+    if (name.startsWith('LLM') || name.startsWith('Open-Source-LLM')) return 'LLM & Agents';
+    return 'Other';
+}
+
+function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+}
 
 function fetchRepos() {
     const container = document.getElementById('repo-container');
-    container.innerHTML = '<p>Loading repositories...</p>';
+    const pinnedContainer = document.getElementById('pinned-repos');
+    container.innerHTML = '<p class="loading">Loading repositories…</p>';
 
-    // Using GitHub API to fetch repositories - Fixed: Removed trailing space
-    fetch('https://api.github.com/users/TAUforPython/repos') // Fixed: Removed trailing space
-        .then(response => response.json())
+    fetch(`https://api.github.com/users/${GITHUB_USER}/repos?per_page=100&sort=updated`)
+        .then(response => {
+            if (!response.ok) throw new Error(`GitHub API ${response.status}`);
+            return response.json();
+        })
         .then(repos => {
-            container.innerHTML = '';
-            repos.sort((a, b) => new Date(b.updated_at) - new Date(a.updated_at))
-                 .forEach(repo => createRepoCard(repo, container));
+            if (!Array.isArray(repos)) throw new Error('Unexpected GitHub API response');
+
+            allRepos = repos.sort((a, b) => b.stargazers_count - a.stargazers_count || a.name.localeCompare(b.name));
+
+            const countEl = document.getElementById('github-repo-count');
+            if (countEl) countEl.textContent = allRepos.length;
+
+            renderPinnedRepos(pinnedContainer);
+            renderRepoGrid(container);
+            setupRepoFilters();
         })
         .catch(error => {
             console.error('Error fetching repositories:', error);
-            container.innerHTML = '<p>Error loading repositories. Please try again later.</p>';
+            container.innerHTML = '<p class="error">Error loading repositories. Please try again later.</p>';
+            if (pinnedContainer) {
+                pinnedContainer.innerHTML = '<p class="error">Could not load featured repos.</p>';
+            }
         });
 }
 
-function createRepoCard(repo, container) {
-    const card = document.createElement('div');
-    card.className = 'repo-card';
+function renderPinnedRepos(container) {
+    if (!container) return;
 
-    card.innerHTML = `
-        <h3>${repo.name}</h3>
-        <p>${repo.description || 'No description provided'}</p>
-        <div class="repo-stats">
-            <div class="stat">
-                <i>⭐</i>
-                <span>${repo.stargazers_count} stars</span>
+    const pinned = PINNED_REPOS
+        .map(name => allRepos.find(r => r.name === name))
+        .filter(Boolean);
+
+    if (!pinned.length) {
+        container.innerHTML = '<p class="loading">No featured repos found.</p>';
+        return;
+    }
+
+    container.innerHTML = pinned.map(repo => `
+        <a href="${repo.html_url}" class="pinned-card" target="_blank" rel="noopener">
+            <h4>${escapeHtml(repo.name)}</h4>
+            <p>${escapeHtml(repo.description || 'Jupyter notebook examples')}</p>
+            <span class="pinned-stats">★ ${repo.stargazers_count} · ${escapeHtml(repo.language || 'Notebook')}</span>
+        </a>
+    `).join('');
+}
+
+function renderRepoGrid(container) {
+    const filtered = activeFilter === 'all'
+        ? allRepos
+        : allRepos.filter(r => getRepoCategory(r.name) === activeFilter);
+
+    if (!filtered.length) {
+        container.innerHTML = '<p class="loading">No repositories in this category.</p>';
+        return;
+    }
+
+    container.innerHTML = filtered.map(repo => createRepoCardHtml(repo)).join('');
+}
+
+function createRepoCardHtml(repo) {
+    const category = getRepoCategory(repo.name);
+    const description = repo.description || 'Jupyter notebook with practical examples.';
+
+    return `
+        <article class="repo-card">
+            <div class="repo-card-header">
+                <h3><a href="${repo.html_url}" target="_blank" rel="noopener">${escapeHtml(repo.name)}</a></h3>
+                <span class="repo-category">${escapeHtml(category)}</span>
             </div>
-            <div class="stat">
-                <i>🍴</i>
-                <span>${repo.forks_count} forks</span>
+            <p>${escapeHtml(description)}</p>
+            <div class="repo-stats">
+                <div class="stat"><span>★</span><span>${repo.stargazers_count}</span></div>
+                <div class="stat"><span>⑂</span><span>${repo.forks_count}</span></div>
+                <div class="stat"><span>◉</span><span>${escapeHtml(repo.language || 'Notebook')}</span></div>
             </div>
-            <div class="stat">
-                <i>📅</i>
-                <span>Updated: ${new Date(repo.updated_at).toLocaleDateString()}</span>
-            </div>
-            <div class="stat">
-                <i>📝</i>
-                <span>${repo.language || 'Not specified'}</span>
-            </div>
-        </div>
-        <a href="${repo.html_url}" target="_blank" class="btn">View Repository</a>
+            <a href="${repo.html_url}" target="_blank" rel="noopener" class="btn">Open repo</a>
+        </article>
     `;
+}
 
-    container.appendChild(card);
+function setupRepoFilters() {
+    const filters = document.querySelectorAll('.repo-filter');
+    filters.forEach(btn => {
+        btn.addEventListener('click', () => {
+            filters.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            activeFilter = btn.dataset.filter;
+            renderRepoGrid(document.getElementById('repo-container'));
+        });
+    });
 }
 
 function loadKaggleStats() {
