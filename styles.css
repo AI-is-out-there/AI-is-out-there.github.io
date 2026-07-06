@@ -545,34 +545,16 @@ section h2 {
     margin-bottom: 1rem;
 }
 
-.review-themes {
-    list-style: none;
+.review-theme-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
     margin-bottom: 1rem;
 }
 
-.review-themes li {
-    font-size: 0.88rem;
-    color: var(--color-muted);
-    padding: 0.35rem 0 0.35rem 1rem;
-    position: relative;
-    border-bottom: 1px solid #f0f3f7;
-}
-
-.review-themes li:last-child {
-    border-bottom: none;
-}
-
-.review-themes li::before {
-    content: '›';
-    position: absolute;
-    left: 0;
-    color: var(--color-accent);
-    font-weight: 700;
-}
-
-.review-themes strong {
-    color: var(--color-text);
-    font-weight: 500;
+.review-theme-btn {
+    font-family: inherit;
+    cursor: pointer;
 }
 
 .github-meta {

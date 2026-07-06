@@ -349,12 +349,17 @@ function createRepoCardHtml(repo) {
 
 function setupRepoFilters() {
     const filters = document.querySelectorAll('.repo-filter');
+    const repoGrid = document.getElementById('repo-container');
+
     filters.forEach(btn => {
         btn.addEventListener('click', () => {
             filters.forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
             activeFilter = btn.dataset.filter;
-            renderRepoGrid(document.getElementById('repo-container'));
+            renderRepoGrid(repoGrid);
+            if (activeFilter !== 'all' && repoGrid) {
+                repoGrid.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
         });
     });
 }

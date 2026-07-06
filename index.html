@@ -229,13 +229,15 @@
                     <article class="github-review">
                         <h3>Repository overview</h3>
                         <p>Hands-on Python code organized as a teaching and research companion — from control-theory fundamentals to clinical deep learning. Most repos are self-contained notebooks with practical examples aligned with my Stepik courses, RUTube lectures, and ORCID publications.</p>
-                        <ul class="review-themes">
-                            <li><strong>BioMed AI</strong> — NN, RNN, LSTM, autoencoders, GNNs &amp; LLMs for ECG, EEG, genomics, and pain analysis</li>
-                            <li><strong>Control Theory</strong> — modeling, stability, optimal control, phase portraits, and signal denoising</li>
-                            <li><strong>Machine Learning</strong> — 50+ notebooks on GNNs, transformers, AutoML, time series &amp; diffusion models</li>
-                            <li><strong>Math &amp; Signals</strong> — wavelets (CWT/DWT), Fourier analysis, fuzzy logic, and applied statistics</li>
-                            <li><strong>Neuro &amp; LLM</strong> — neuronal dynamics, clinical BERT, radiology tools, and AI agents</li>
-                        </ul>
+                        <div class="review-theme-buttons" role="group" aria-label="Filter repositories by topic">
+                            <button type="button" class="review-theme-btn repo-filter" data-filter="BioMed AI">BioMed AI</button>
+                            <button type="button" class="review-theme-btn repo-filter" data-filter="Control Theory">Control Theory</button>
+                            <button type="button" class="review-theme-btn repo-filter" data-filter="Machine Learning">Machine Learning</button>
+                            <button type="button" class="review-theme-btn repo-filter" data-filter="Math &amp; Signals">Math &amp; Signals</button>
+                            <button type="button" class="review-theme-btn repo-filter" data-filter="Fuzzy Logic">Fuzzy Logic</button>
+                            <button type="button" class="review-theme-btn repo-filter" data-filter="Neuroscience">Neuroscience</button>
+                            <button type="button" class="review-theme-btn repo-filter" data-filter="LLM &amp; Agents">LLM &amp; Agents</button>
+                        </div>
                         <p class="github-meta">
                             <span id="github-repo-count">45</span> repositories ·
                             primarily Jupyter Notebook ·
