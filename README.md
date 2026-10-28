@@ -53,6 +53,12 @@ The publication entries still link to the ORCID record; the metadata refresh was
 
 The profile photograph is the previous Kaggle portrait, restored with the owner's confirmation and stored locally at `assets/portrait.png`. It does not require an external request when the page loads. Original source: `https://storage.googleapis.com/kaggle-avatars/images/6828784-kg.png?t=2024-10-09-17-14-20`.
 
+## Habr writing
+
+The Articles navigation link leads to the Habr archive entry in the Research section. It points to the owner-supplied profile at [DenisDenisMIS on Habr](https://habr.com/ru/users/DenisDenisMIS/articles/). The archive link works without JavaScript and does not fetch external content while the portfolio loads.
+
+Individual article titles, dates and summaries have not yet been added: the running environment's proxy returned a CONNECT 403 for Habr. The draft includes `habr.com`, but that addition is not yet active in the running policy. After access is applied, read the listing and full articles before adding individual cards, preserve Russian titles with `lang="ru"`, and cite each canonical article URL. Do not infer article details from unrelated project descriptions.
+
 ## Content sources
 
 Project descriptions were reviewed against these public repository snapshots on 2026-10-28:
