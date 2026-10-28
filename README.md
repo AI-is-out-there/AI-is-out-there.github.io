@@ -57,7 +57,7 @@ The profile photograph is the previous Kaggle portrait, restored with the owner'
 
 The Articles navigation link leads to the Habr archive entry in the Research section. It points to the owner-supplied profile at [DenisDenisMIS on Habr](https://habr.com/ru/users/DenisDenisMIS/articles/). The archive link works without JavaScript and does not fetch external content while the portfolio loads.
 
-Individual article titles, dates and summaries have not yet been added: the running environment's proxy returned a CONNECT 403 for Habr. The draft includes `habr.com`, but that addition is not yet active in the running policy. After access is applied, read the listing and full articles before adding individual cards, preserve Russian titles with `lang="ru"`, and cite each canonical article URL. Do not infer article details from unrelated project descriptions.
+This section links directly to the author's full archive. It does not scrape Habr, load external article content, or require Habr network access for local development.
 
 ## Content sources
 
