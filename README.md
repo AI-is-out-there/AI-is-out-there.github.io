@@ -49,7 +49,15 @@ python3 tools/refresh_publications.py
 
 The command retrieves public ORCID metadata over verified HTTPS, requires one unique self-referential DOI for each selected topic, and then replaces the marked publication block with exact titles, years, journals and direct DOI links. It fails before changing the page if metadata is missing or ambiguous; review `SELECTION` when intentionally choosing different papers. An already downloaded official ORCID works JSON can also be supplied with `--input path/to/works.json`. Review the resulting diff and run the checks before publishing. Focus summaries describe research topics, not individual authorship contributions or unverified performance claims.
 
-**Current environment limitation:** the network policy denied ORCID metadata and the existing Kaggle portrait. Citation links therefore still lead to ORCID, and `assets/profile.svg` is a local monogram rather than a photograph. Allowlist additions were saved for `pub.orcid.org`, `api.crossref.org` and `storage.googleapis.com`; they must be applied in environment settings before the affected requests can run. This does not affect local serving or browser tests. After access is available, refresh citations and, if desired, download the original portrait into `assets/`, update its `src` and alt text, then rerun checks. Original portrait source: `https://storage.googleapis.com/kaggle-avatars/images/6828784-kg.png?t=2024-10-09-17-14-20`.
+The publication entries still link to the ORCID record; the metadata refresh was blocked during initial setup and has not yet been rerun. Verify the selected works before replacing those links with individual DOIs.
+
+The profile photograph is the previous Kaggle portrait, restored with the owner's confirmation and stored locally at `assets/portrait.png`. It does not require an external request when the page loads. Original source: `https://storage.googleapis.com/kaggle-avatars/images/6828784-kg.png?t=2024-10-09-17-14-20`.
+
+## Habr writing
+
+The Articles navigation link leads to the Habr archive entry in the Research section. It points to the owner-supplied profile at [DenisDenisMIS on Habr](https://habr.com/ru/users/DenisDenisMIS/articles/). The archive link works without JavaScript and does not fetch external content while the portfolio loads.
+
+This section links directly to the author's full archive. It does not scrape Habr, load external article content, or require Habr network access for local development.
 
 ## Content sources
 
@@ -69,4 +77,4 @@ The figures are original method schematics, not experimental plots or measured r
 
 `assets/fonts/` contains Latin/Cyrillic subsets of the Inter and Manrope variable fonts from the official [Google Fonts repository](https://github.com/google/fonts). Each font's SIL Open Font License is included alongside it. Fallbacks use system sans-serif fonts.
 
-The favicon, profile monogram, diagrams and 1200×630 social preview are local assets. Canonical, Open Graph and Twitter metadata use `https://ai-is-out-there.github.io/`; update those URLs, `robots.txt` and `sitemap.xml` together if the publishing domain changes.
+The favicon, profile portrait, diagrams and 1200×630 social preview are local assets. Canonical, Open Graph and Twitter metadata use `https://ai-is-out-there.github.io/`; update those URLs, `robots.txt` and `sitemap.xml` together if the publishing domain changes.
