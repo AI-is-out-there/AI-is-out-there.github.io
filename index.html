@@ -4,18 +4,37 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Denis Andrikov — data scientist, Python developer and educator working across biomedical AI, machine learning and control systems.">
-  <meta name="theme-color" content="#f3f0e8">
-  <title>Denis Andrikov — Data Scientist &amp; Educator</title>
+  <meta name="theme-color" content="#f4f7fb">
+  <link rel="canonical" href="https://ai-is-out-there.github.io/">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:site_name" content="Denis Andrikov">
+  <meta property="og:title" content="Denis Andrikov — Research, Code &amp; Interactive Learning">
+  <meta property="og:description" content="Biomedical AI, graph-aware extreme-value analysis, and hands-on explainers for reservoirs, transformers and autoencoders.">
+  <meta property="og:url" content="https://ai-is-out-there.github.io/">
+  <meta property="og:image" content="https://ai-is-out-there.github.io/assets/social-preview.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Denis Andrikov: research, code and interactive learning">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Denis Andrikov — Research, Code &amp; Interactive Learning">
+  <meta name="twitter:description" content="Biomedical AI, graph-aware extreme-value analysis, and interactive machine-learning tools.">
+  <meta name="twitter:image" content="https://ai-is-out-there.github.io/assets/social-preview.png">
+  <meta name="twitter:image:alt" content="Denis Andrikov: research, code and interactive learning">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preload" href="assets/fonts/manrope-variable.ttf" as="font" type="font/ttf" crossorigin>
+  <script src="theme.js"></script>
+  <title>Denis Andrikov — Research, Code &amp; Interactive Learning</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
   <header class="site-header">
-    <a class="monogram" href="#top" aria-label="Denis Andrikov, home">DA<span>.</span></a>
+    <a class="monogram" href="#top" aria-label="DA. — Denis Andrikov, home">DA<span>.</span></a>
     <nav class="site-nav" aria-label="Main navigation">
-      <a href="#work">Work</a><a href="#path">Path</a><a href="#writing">Research</a>
+      <a href="#projects">Work</a><a href="#work">Expertise</a><a href="#path">Path</a><a href="#writing">Research</a>
     </nav>
-    <button class="theme-toggle" type="button" aria-label="Switch to dark theme" aria-pressed="false">
+    <button class="theme-toggle" type="button" hidden aria-label="Switch to dark theme" aria-pressed="false">
       <span aria-hidden="true">◐</span><span class="theme-label">Dark</span>
     </button>
   </header>
@@ -25,15 +44,15 @@
       <div class="hero-copy reveal">
         <p class="eyebrow"><span class="status-dot"></span> Open to research &amp; collaboration</p>
         <h1 id="hero-title">I turn complex signals into <em>clear decisions.</em></h1>
-        <p class="intro">I'm <strong>Denis Andrikov</strong>, a data scientist, Python developer and educator connecting rigorous control theory with practical biomedical AI.</p>
+        <p class="intro">I'm <strong>Denis Andrikov</strong>, a data scientist, Python developer and educator connecting rigorous control theory with practical biomedical AI—and building interactive tools that make the methods explorable.</p>
         <div class="hero-actions">
-          <a class="button button-primary" href="#work">Explore my work <span>↘</span></a>
+          <a class="button button-primary" href="#projects">Explore my work <span>↘</span></a>
           <a class="button button-quiet" href="https://orcid.org/0000-0003-0359-0897" target="_blank" rel="noopener">View ORCID <span>↗</span></a>
         </div>
       </div>
       <aside class="identity-card reveal" aria-label="Profile summary">
         <div class="portrait-wrap">
-          <img src="https://storage.googleapis.com/kaggle-avatars/images/6828784-kg.png?t=2024-10-09-17-14-20" alt="Portrait of Denis Andrikov" width="168" height="168">
+          <img src="assets/profile.svg" alt="DA — Denis Andrikov monogram" width="168" height="168" fetchpriority="high">
           <span class="orbit orbit-one"></span><span class="orbit orbit-two"></span>
         </div>
         <div>
@@ -41,9 +60,9 @@
           <h2>Researcher by method.<br>Teacher by instinct.</h2>
         </div>
         <dl class="quick-stats">
-          <div><dt>31</dt><dd>research works</dd></div>
-          <div><dt>45+</dt><dd>open repositories</dd></div>
-          <div><dt>20+</dt><dd>years teaching</dd></div>
+          <div><dt>4</dt><dd>interactive labs</dd></div>
+          <div><dt>3</dt><dd>perspectives</dd></div>
+          <div><dt>EN / RU</dt><dd>learning resources</dd></div>
         </dl>
       </aside>
       <a class="scroll-cue" href="#work"><span>Scroll to explore</span><i aria-hidden="true">↓</i></a>
@@ -56,19 +75,37 @@
         <p>Select a field to see how research, code and teaching come together.</p>
       </div>
       <div class="expertise-shell reveal">
-        <div class="expertise-tabs" role="tablist" aria-label="Areas of expertise">
-          <button role="tab" aria-selected="true" aria-controls="expertise-panel" data-expertise="biomed">Biomedical AI <span>01</span></button>
-          <button role="tab" aria-selected="false" aria-controls="expertise-panel" data-expertise="control">Control systems <span>02</span></button>
-          <button role="tab" aria-selected="false" aria-controls="expertise-panel" data-expertise="education">Open education <span>03</span></button>
+        <div class="expertise-tabs" role="tablist" aria-label="Areas of expertise" aria-orientation="vertical" hidden>
+          <button id="tab-biomed" type="button" role="tab" aria-selected="true" aria-controls="panel-biomed" data-expertise="biomed">Biomedical AI <span aria-hidden="true">01</span></button>
+          <button id="tab-control" type="button" role="tab" aria-selected="false" aria-controls="panel-control" tabindex="-1" data-expertise="control">Control systems <span aria-hidden="true">02</span></button>
+          <button id="tab-education" type="button" role="tab" aria-selected="false" aria-controls="panel-education" tabindex="-1" data-expertise="education">Open education <span aria-hidden="true">03</span></button>
         </div>
-        <article class="expertise-panel" id="expertise-panel" tabindex="0" aria-live="polite">
-          <p class="panel-symbol" aria-hidden="true">∿</p>
-          <p class="panel-label" id="panel-label">Biomedical AI</p>
-          <h3 id="panel-title">Finding interpretable patterns in physiological signals.</h3>
-          <p id="panel-copy">EEG and ECG pipelines that combine signal processing, deep learning and explainability for clinical research.</p>
-          <ul id="panel-tags"><li>EEG / ECG</li><li>Explainable AI</li><li>Time series</li></ul>
-          <a id="panel-link" href="https://github.com/D2718281828nis/BioMedAI" target="_blank" rel="noopener">Explore related code <span>↗</span></a>
-        </article>
+        <div class="expertise-panels">
+          <article class="expertise-panel" id="panel-biomed" role="tabpanel" aria-labelledby="tab-biomed" tabindex="0">
+            <p class="panel-symbol" aria-hidden="true">∿</p>
+            <p class="panel-label">Biomedical AI</p>
+            <h3>Finding interpretable patterns in physiological signals.</h3>
+            <p>EEG and ECG notebooks connect signal processing, deep learning and explainability. Graph-EVT-agent extends the time-series toolkit with extreme-event detection and transparent source ranking.</p>
+            <ul><li>EEG / ECG</li><li>Extreme-value theory</li><li>Graph learning</li></ul>
+            <a href="https://github.com/D2718281828nis/BioMedAI" target="_blank" rel="noopener">Explore biomedical notebooks <span aria-hidden="true">↗</span></a>
+          </article>
+          <article class="expertise-panel" id="panel-control" role="tabpanel" aria-labelledby="tab-control" tabindex="0">
+            <p class="panel-symbol" aria-hidden="true">⌁</p>
+            <p class="panel-label">Control systems</p>
+            <h3>Connecting dynamic systems with models that learn.</h3>
+            <p>Mathematical modelling, stability and regulator design meet reservoir computing. The interactive lab connects state-space models, impulse responses and model reduction with learned dynamics.</p>
+            <ul><li>State-space models</li><li>System identification</li><li>Reservoir computing</li></ul>
+            <a href="https://d2718281828nis.github.io/ML-Reservoir_Computing/" target="_blank" rel="noopener">Explore the reservoir lab <span aria-hidden="true">↗</span></a>
+          </article>
+          <article class="expertise-panel" id="panel-education" role="tabpanel" aria-labelledby="tab-education" tabindex="0">
+            <p class="panel-symbol" aria-hidden="true">◌</p>
+            <p class="panel-label">Open education</p>
+            <h3>Learn the method by changing the model.</h3>
+            <p>Browser-based experiments make embeddings, attention, latent spaces and recurrent dynamics tangible. English and Russian explainers pair live calculations with companion code and notebooks.</p>
+            <ul><li>Interactive explainers</li><li>EN / RU</li><li>Companion notebooks</li></ul>
+            <a href="https://d2718281828nis.github.io/ML-Transformers/" target="_blank" rel="noopener">Explore embeddings &amp; attention <span aria-hidden="true">↗</span></a>
+          </article>
+        </div>
       </div>
     </section>
 
@@ -81,7 +118,7 @@
         <li><time>1998—2017</time><div><h3>Engineering foundations</h3><p>Doctoral training and applied work in robust control, system dynamics and regulator synthesis.</p></div></li>
         <li><time>2021—2022</time><div><h3>The biomedical pivot</h3><p>Machine learning and extreme-value methods for explainable epileptic seizure detection.</p></div></li>
         <li><time>2023—2024</time><div><h3>From signals to systems</h3><p>EEG, bio-artificial organs, neuroadaptive education and clinical deep-learning pipelines.</p></div></li>
-        <li class="current"><time>2025—Now</time><div><h3>Clinical translation</h3><p>Interpretable models for biomarker discovery, physiological time series and open scientific tooling.</p></div></li>
+        <li class="current"><time>2025—Now</time><div><h3>Interpretable research, interactive learning</h3><p>Graph-aware extreme-value analysis, biomedical time series and browser-based explainers that connect research methods with hands-on education.</p></div></li>
       </ol>
     </section>
 
@@ -90,25 +127,116 @@
         <p class="section-index">03 / Selected work</p>
         <h2 id="projects-title">Useful ideas should<br><em>leave the notebook.</em></h2>
       </div>
-      <div class="project-filter reveal" role="group" aria-label="Filter selected projects">
-        <button class="active" data-filter="all" aria-pressed="true">All</button><button data-filter="ai" aria-pressed="false">AI &amp; signals</button><button data-filter="control" aria-pressed="false">Control</button><button data-filter="learning" aria-pressed="false">Learning</button>
+      <div class="project-filter reveal" role="group" aria-label="Filter selected projects" hidden>
+        <button type="button" class="active" data-filter="all" aria-pressed="true">All</button>
+        <button type="button" data-filter="ai" aria-pressed="false">AI &amp; signals</button>
+        <button type="button" data-filter="control" aria-pressed="false">Control</button>
+        <button type="button" data-filter="learning" aria-pressed="false">Learning</button>
       </div>
-      <div class="project-grid reveal">
-        <a class="project-card project-card-wide" data-category="ai" href="https://github.com/D2718281828nis/BioMedAI" target="_blank" rel="noopener"><span class="project-number">01</span><div><p>Open-source collection</p><h3>BioMed AI</h3><p class="project-description">Neural networks, LLMs and graph models applied to biomedical problems.</p></div><span class="arrow">↗</span></a>
-        <a class="project-card" data-category="control" href="https://www.rudntau.ru" target="_blank" rel="noopener"><span class="project-number">02</span><div><p>Course portal</p><h3>Control Theory</h3><p class="project-description">Models, stability and synthesis made approachable.</p></div><span class="arrow">↗</span></a>
-        <a class="project-card" data-category="learning" href="https://stepik.org/course/230476/syllabus" target="_blank" rel="noopener"><span class="project-number">03</span><div><p>Free online course</p><h3>ML Fundamentals</h3><p class="project-description">A practical first route into machine learning with Python.</p></div><span class="arrow">↗</span></a>
-        <a class="project-card project-card-wide" data-category="learning" href="https://rutube.ru/channel/38172356/" target="_blank" rel="noopener"><span class="project-number">04</span><div><p>Video library · 76 playlists</p><h3>Bauman AI</h3><p class="project-description">Long-form lessons on mathematics, machine learning and digital medicine.</p></div><span class="arrow">↗</span></a>
+      <p class="project-count" id="project-count" role="status" aria-live="polite" aria-atomic="true" hidden></p>
+      <div class="project-grid">
+        <article class="project-card project-featured reveal" data-category="ai learning" aria-labelledby="project-evt">
+          <img class="project-visual" src="assets/evt-pipeline.svg" width="720" height="240" loading="lazy" alt="Method schematic: time series to EVT detection, dependence graph and source ranking.">
+          <div class="project-body">
+            <p class="project-kicker">01 / Research tooling + educational demo</p>
+            <h3 id="project-evt">Graph-EVT-agent</h3>
+            <p class="project-description">When did an extreme event begin, and which channel responded first? A Python pipeline separates detection, graph construction and source ranking.</p>
+            <dl class="project-details">
+              <div><dt>Method</dt><dd>POT/GPD tail modelling, AR / DFA / Kuramoto-wavelet graphs, transparent ranking and optional trained GNN/GAT models.</dd></div>
+              <div><dt>Explore</dt><dd>The educational companion includes 1-D and multichannel notebooks. Its browser lab lets you change a 12-oscillator Kuramoto system and watch an event propagate.</dd></div>
+            </dl>
+            <p class="project-note">The teaching demo uses synthetic data. Dependence and source rankings do not establish causality or clinical validity.</p>
+            <div class="project-links">
+              <a href="https://github.com/D2718281828nis/Graph-EVT-agent" target="_blank" rel="noopener">Pipeline code <span aria-hidden="true">↗</span></a>
+              <a href="https://github.com/D2718281828nis/EVT-educational-demo" target="_blank" rel="noopener">Educational notebooks <span aria-hidden="true">↗</span></a>
+              <a href="https://d2718281828nis.github.io/EVT-educational-demo/" target="_blank" rel="noopener">Open propagation lab <span aria-hidden="true">↗</span></a>
+            </div>
+          </div>
+        </article>
+        <article class="project-card reveal" data-category="control learning" aria-labelledby="project-reservoir">
+          <img class="project-visual" src="assets/reservoir.svg" width="720" height="240" loading="lazy" alt="Method schematic: an input feeds a recurrent reservoir and a trained readout produces a forecast.">
+          <div class="project-body">
+            <p class="project-kicker">02 / Interactive lab · EN / RU</p>
+            <h3 id="project-reservoir">Reservoir Computing</h3>
+            <p class="project-description">Where does a model keep its memory? Compare a feed-forward network with an echo state network, then follow a forecast through the computation.</p>
+            <dl class="project-details">
+              <div><dt>Try it</dt><dd>Change the spectral radius and leak rate; inspect a 100-neuron reservoir and compare forecasting baselines.</dd></div>
+              <div><dt>Go deeper</dt><dd>Connect reservoir dynamics to state-space control, impulse responses and reduced-order models. Companion NumPy experiments reproduce the lab.</dd></div>
+            </dl>
+            <div class="project-links">
+              <a href="https://d2718281828nis.github.io/ML-Reservoir_Computing/" target="_blank" rel="noopener">Open reservoir lab <span aria-hidden="true">↗</span></a>
+              <a href="https://github.com/D2718281828nis/ML-Reservoir_Computing/tree/master/explainer" target="_blank" rel="noopener">Code &amp; methods <span aria-hidden="true">↗</span></a>
+            </div>
+          </div>
+        </article>
+        <article class="project-card reveal" data-category="learning" aria-labelledby="project-transformer">
+          <img class="project-visual" src="assets/attention.svg" width="720" height="240" loading="lazy" alt="Method schematic: tokens become embeddings and flow into a causal attention matrix.">
+          <div class="project-body">
+            <p class="project-kicker">03 / Interactive lab · EN / RU</p>
+            <h3 id="project-transformer">Embeddings &amp; Attention</h3>
+            <p class="project-description">Follow a sentence into GPT-2: from byte-pair tokenization and token IDs to embeddings, positions and the first self-attention layer.</p>
+            <dl class="project-details">
+              <div><dt>Try it</dt><dd>Inspect BPE merges, train a tiny embedding model and trace Q/K/V, masking and attention weights.</dd></div>
+              <div><dt>Under the hood</dt><dd>The explainer uses GPT-2's tokenizer and selected real model weights. Its verification script compares the computations with Transformers.</dd></div>
+            </dl>
+            <p class="project-note">Attention views download model weights on first use; tokenization can run without those downloads.</p>
+            <div class="project-links">
+              <a href="https://d2718281828nis.github.io/ML-Transformers/" target="_blank" rel="noopener">Open attention lab <span aria-hidden="true">↗</span></a>
+              <a href="https://github.com/D2718281828nis/ML-Transformers/tree/main/explainer" target="_blank" rel="noopener">Code &amp; methods <span aria-hidden="true">↗</span></a>
+            </div>
+          </div>
+        </article>
+        <article class="project-card reveal" data-category="learning" aria-labelledby="project-autoencoder">
+          <img class="project-visual" src="assets/autoencoder.svg" width="720" height="240" loading="lazy" alt="Method schematic: an encoder compresses an input through a latent bottleneck and a decoder reconstructs it.">
+          <div class="project-body">
+            <p class="project-kicker">04 / Interactive lab · EN / RU</p>
+            <h3 id="project-autoencoder">Autoencoders &amp; Forecasting</h3>
+            <p class="project-description">Explore what a compressed representation keeps—and loses. Move from a one-dimensional bottleneck to digit embeddings, VAEs and time-series forecasts.</p>
+            <dl class="project-details">
+              <div><dt>Try it</dt><dd>Train a toy autoencoder, draw a digit, vary the VAE's β parameter and inspect possible futures.</dd></div>
+              <div><dt>Go deeper</dt><dd>Compare forecasting autoencoders with NLinear on ETTh1 and examine uncertainty through a conditional VAE.</dd></div>
+            </dl>
+            <div class="project-links">
+              <a href="https://d2718281828nis.github.io/ML-Transformers/autoencoders/ru/" target="_blank" rel="noopener">Open autoencoder lab (RU) <span aria-hidden="true">↗</span></a>
+              <a href="https://d2718281828nis.github.io/ML-Transformers/autoencoders/" target="_blank" rel="noopener">English version <span aria-hidden="true">↗</span></a>
+              <a href="https://github.com/D2718281828nis/ML-Transformers/tree/main/explainer/autoencoders" target="_blank" rel="noopener">Code &amp; methods <span aria-hidden="true">↗</span></a>
+            </div>
+          </div>
+        </article>
+        <article class="project-card reveal" data-category="ai" aria-labelledby="project-biomed">
+          <div class="project-body">
+            <p class="project-kicker">05 / Biomedical notebook collection</p>
+            <h3 id="project-biomed">BioMed AI</h3>
+            <p class="project-description">Executable examples that connect biomedical data with signal processing and machine learning.</p>
+            <dl class="project-details">
+              <div><dt>Methods</dt><dd>EEG filtering and anomaly detection, ECG classification, graph models, medical language models and genetics exploration.</dd></div>
+              <div><dt>Explore</dt><dd>Start with a task-specific notebook, inspect its data preparation and compare the model with the signal it is intended to describe.</dd></div>
+            </dl>
+            <div class="project-links"><a href="https://github.com/D2718281828nis/BioMedAI" target="_blank" rel="noopener">Browse biomedical notebooks <span aria-hidden="true">↗</span></a></div>
+          </div>
+        </article>
       </div>
+      <aside class="teaching-resources reveal" aria-labelledby="resources-title">
+        <h3 id="resources-title">More ways to learn</h3>
+        <p>Courses and long-form lessons alongside the interactive labs.</p>
+        <div class="resource-links">
+          <a href="https://www.rudntau.ru" target="_blank" rel="noopener">Control theory course portal <span aria-hidden="true">↗</span></a>
+          <a href="https://stepik.org/course/230476/syllabus" target="_blank" rel="noopener">ML fundamentals on Stepik <span aria-hidden="true">↗</span></a>
+          <a href="https://rutube.ru/channel/38172356/" target="_blank" rel="noopener">Bauman AI video library <span aria-hidden="true">↗</span></a>
+        </div>
+      </aside>
     </section>
 
     <section class="research section" id="writing" aria-labelledby="research-title">
       <div class="section-heading reveal"><p class="section-index">04 / Research</p><h2 id="research-title">Selected <em>publications.</em></h2></div>
+      <!-- publications:start -->
       <div class="publication-list reveal">
-        <a href="https://orcid.org/0000-0003-0359-0897" target="_blank" rel="noopener"><time>2026</time><h3>CNN interpretability framework discovers new epileptic biomarkers</h3><p>International Journal of Neural Systems</p><span>↗</span></a>
-        <a href="https://orcid.org/0000-0003-0359-0897" target="_blank" rel="noopener"><time>2024</time><h3>Two-stage outlier detection and deep learning for seizure detection</h3><p>IEEE Access</p><span>↗</span></a>
-        <a href="https://orcid.org/0000-0003-0359-0897" target="_blank" rel="noopener"><time>2022</time><h3>Extreme value theory inspires explainable machine learning</h3><p>Scientific Reports</p><span>↗</span></a>
+        <a href="https://orcid.org/0000-0003-0359-0897" target="_blank" rel="noopener"><time datetime="2026">2026</time><div><h3>CNN interpretability framework discovers new epileptic biomarkers</h3><p class="publication-focus">Interpretable models and epileptic biomarkers.</p></div><p>International Journal of Neural Systems</p><span>↗</span></a>
+        <a href="https://orcid.org/0000-0003-0359-0897" target="_blank" rel="noopener"><time datetime="2024">2024</time><div><h3>Two-stage outlier detection and deep learning for seizure detection</h3><p class="publication-focus">Outlier detection combined with deep learning for seizure analysis.</p></div><p>IEEE Access</p><span>↗</span></a>
+        <a href="https://orcid.org/0000-0003-0359-0897" target="_blank" rel="noopener"><time datetime="2022">2022</time><div><h3>Extreme value theory inspires explainable machine learning</h3><p class="publication-focus">Extreme-value methods for explainable seizure detection.</p></div><p>Scientific Reports</p><span>↗</span></a>
       </div>
-      <a class="text-link reveal" href="https://orcid.org/0000-0003-0359-0897" target="_blank" rel="noopener">Browse all 31 works on ORCID <span>↗</span></a>
+      <!-- publications:end -->
+      <a class="text-link reveal" href="https://orcid.org/0000-0003-0359-0897" target="_blank" rel="noopener">Browse the full research record on ORCID <span>↗</span></a>
     </section>
 
     <section class="contact section" aria-labelledby="contact-title">
@@ -117,7 +245,7 @@
       <div class="social-links reveal"><a href="https://github.com/D2718281828nis" target="_blank" rel="noopener">GitHub ↗</a><a href="https://www.kaggle.com/denisandrikov" target="_blank" rel="noopener">Kaggle ↗</a><a href="https://www.linkedin.com/in/denis-andrikov-7202947/" target="_blank" rel="noopener">LinkedIn ↗</a><a href="https://orcid.org/0000-0003-0359-0897" target="_blank" rel="noopener">ORCID ↗</a></div>
     </section>
   </main>
-  <footer><a class="monogram" href="#top">DA<span>.</span></a><p>Data · Systems · Education</p><p>© <span id="year"></span> Denis Andrikov</p></footer>
+  <footer><a class="monogram" href="#top">DA<span>.</span></a><p>Data · Systems · Education</p><p>© <span id="year">2026</span> Denis Andrikov</p></footer>
   <script src="script.js"></script>
 </body>
 </html>

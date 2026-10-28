@@ -1,14 +1,13 @@
-const expertise = {
-  biomed: { symbol: '∿', label: 'Biomedical AI', title: 'Finding interpretable patterns in physiological signals.', copy: 'EEG and ECG pipelines that combine signal processing, deep learning and explainability for clinical research.', tags: ['EEG / ECG', 'Explainable AI', 'Time series'], link: 'https://github.com/D2718281828nis/BioMedAI' },
-  control: { symbol: '⌁', label: 'Control systems', title: 'Making dynamic systems stable, robust and understandable.', copy: 'Mathematical modelling, system identification and regulator design translated into practical Python workflows.', tags: ['Robust control', 'Modelling', 'Python'], link: 'https://www.rudntau.ru' },
-  education: { symbol: '◌', label: 'Open education', title: 'Teaching difficult ideas without diluting their meaning.', copy: 'Free courses, videos and executable notebooks that connect mathematical foundations with real applications.', tags: ['76 playlists', 'Stepik courses', 'Open notebooks'], link: 'https://rutube.ru/channel/38172356/' }
-};
-
 const root = document.documentElement;
 const themeButton = document.querySelector('.theme-toggle');
 const themeLabel = document.querySelector('.theme-label');
-const savedTheme = localStorage.getItem('theme');
-const preferredDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+const systemTheme = window.matchMedia('(prefers-color-scheme: dark)');
+let explicitTheme = false;
+try {
+  explicitTheme = ['light', 'dark'].includes(localStorage.getItem('theme'));
+} catch (_) {
+  // Keep all interactions available without browser storage.
+}
 
 function setTheme(theme) {
   root.dataset.theme = theme;
@@ -16,50 +15,100 @@ function setTheme(theme) {
   themeButton.setAttribute('aria-pressed', String(dark));
   themeButton.setAttribute('aria-label', `Switch to ${dark ? 'light' : 'dark'} theme`);
   themeLabel.textContent = dark ? 'Light' : 'Dark';
-  document.querySelector('meta[name="theme-color"]').content = dark ? '#171916' : '#f3f0e8';
+  document.querySelector('meta[name="theme-color"]').content = dark ? '#09101e' : '#f4f7fb';
 }
 
-setTheme(savedTheme || (preferredDark ? 'dark' : 'light'));
+setTheme(root.dataset.theme || (systemTheme.matches ? 'dark' : 'light'));
 themeButton.addEventListener('click', () => {
   const next = root.dataset.theme === 'dark' ? 'light' : 'dark';
-  localStorage.setItem('theme', next);
   setTheme(next);
+  explicitTheme = true;
+  try {
+    localStorage.setItem('theme', next);
+  } catch (_) {
+    // The preference applies to this visit even if it cannot be saved.
+  }
+});
+themeButton.hidden = false;
+systemTheme.addEventListener('change', event => {
+  if (!explicitTheme) setTheme(event.matches ? 'dark' : 'light');
 });
 
-document.querySelectorAll('[data-expertise]').forEach(tab => {
-  tab.addEventListener('click', () => {
-    document.querySelectorAll('[data-expertise]').forEach(item => item.setAttribute('aria-selected', String(item === tab)));
-    const data = expertise[tab.dataset.expertise];
-    document.querySelector('.panel-symbol').textContent = data.symbol;
-    document.querySelector('#panel-label').textContent = data.label;
-    document.querySelector('#panel-title').textContent = data.title;
-    document.querySelector('#panel-copy').textContent = data.copy;
-    document.querySelector('#panel-tags').innerHTML = data.tags.map(tag => `<li>${tag}</li>`).join('');
-    document.querySelector('#panel-link').href = data.link;
+// All panels are readable HTML until the complete tab interaction is ready.
+const tablist = document.querySelector('.expertise-tabs');
+const tabs = [...tablist.querySelectorAll('[role="tab"]')];
+const panels = [...document.querySelectorAll('.expertise-panel')];
+const mobileTabs = window.matchMedia('(max-width: 820px)');
+function setTabOrientation() {
+  tablist.setAttribute('aria-orientation', mobileTabs.matches ? 'horizontal' : 'vertical');
+}
+function selectTab(tab, focus = false) {
+  tabs.forEach(item => {
+    const selected = item === tab;
+    item.setAttribute('aria-selected', String(selected));
+    item.tabIndex = selected ? 0 : -1;
+  });
+  panels.forEach(panel => {
+    panel.hidden = panel.id !== tab.getAttribute('aria-controls');
+  });
+  if (focus) tab.focus({ preventScroll: true });
+}
+tabs.forEach((tab, index) => {
+  tab.addEventListener('click', () => selectTab(tab));
+  tab.addEventListener('keydown', event => {
+    const previous = mobileTabs.matches ? 'ArrowLeft' : 'ArrowUp';
+    const next = mobileTabs.matches ? 'ArrowRight' : 'ArrowDown';
+    let target;
+    if (event.key === previous) target = (index + tabs.length - 1) % tabs.length;
+    if (event.key === next) target = (index + 1) % tabs.length;
+    if (event.key === 'Home') target = 0;
+    if (event.key === 'End') target = tabs.length - 1;
+    if (target === undefined) return;
+    event.preventDefault();
+    selectTab(tabs[target], true);
+    tabs[target].scrollIntoView({ block: 'nearest', inline: 'nearest' });
   });
 });
+setTabOrientation();
+mobileTabs.addEventListener('change', setTabOrientation);
+selectTab(tabs[0]);
+tablist.hidden = false;
 
-document.querySelectorAll('.project-filter button').forEach(button => {
+const filterGroup = document.querySelector('.project-filter');
+const cards = [...document.querySelectorAll('.project-card')];
+const resultCount = document.querySelector('#project-count');
+function updateProjectCount() {
+  const count = cards.filter(card => !card.hidden).length;
+  resultCount.textContent = `${count} ${count === 1 ? 'project' : 'projects'} shown`;
+}
+filterGroup.querySelectorAll('button').forEach(button => {
   button.addEventListener('click', () => {
-    document.querySelectorAll('.project-filter button').forEach(item => {
+    filterGroup.querySelectorAll('button').forEach(item => {
       const selected = item === button;
       item.classList.toggle('active', selected);
       item.setAttribute('aria-pressed', String(selected));
     });
-    document.querySelectorAll('.project-card').forEach(card => {
-      card.hidden = button.dataset.filter !== 'all' && card.dataset.category !== button.dataset.filter;
+    cards.forEach(card => {
+      card.hidden = button.dataset.filter !== 'all' && !card.dataset.category.split(' ').includes(button.dataset.filter);
     });
+    updateProjectCount();
   });
 });
+updateProjectCount();
+filterGroup.hidden = false;
+resultCount.hidden = false;
 
-const observer = new IntersectionObserver(entries => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      entry.target.classList.add('is-visible');
-      observer.unobserve(entry.target);
-    }
-  });
-}, { threshold: 0.12 });
+// Animation enhances visible content; it is never required to reveal it.
+if ('IntersectionObserver' in window && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('is-visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.reveal').forEach(element => observer.observe(element));
+}
 
-document.querySelectorAll('.reveal').forEach(element => observer.observe(element));
 document.querySelector('#year').textContent = new Date().getFullYear();
