@@ -380,4 +380,6 @@ footer p:last-child { text-align: right; }
     .expertise-panel { padding: 1.5rem; }
     .expertise-panel h3 { font-size: 1.9rem; }
     .teaching-resources { padding: 1.25rem; }
+    .site-nav { gap: .25rem; }
+    .site-nav a { font-size: .75rem; }
 }
