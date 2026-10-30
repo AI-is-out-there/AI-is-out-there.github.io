@@ -100,6 +100,18 @@ test('filters keep the correct projects and announce the result count', async ({
   }
 });
 
+test('interactive library lists every published lab with its source', async ({ page }) => {
+  await page.goto('/');
+  await page.locator('.site-nav a[href="#library"]').click();
+  await expect(page.locator('#library-title')).toBeInViewport();
+  const items = page.locator('.library-item');
+  await expect(items).toHaveCount(6);
+  for (const item of await items.all()) {
+    await expect(item.locator('a[href^="https://d2718281828nis.github.io/"]').first()).toBeVisible();
+    await expect(item.locator('a[href^="https://github.com/D2718281828nis/"]')).toHaveCount(1);
+  }
+});
+
 test('content and all expertise areas remain readable without JavaScript', async ({ browser }) => {
   const context = await browser.newContext({ javaScriptEnabled: false });
   const page = await context.newPage();

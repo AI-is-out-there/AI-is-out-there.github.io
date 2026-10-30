@@ -53,6 +53,21 @@ The publication entries still link to the ORCID record; the metadata refresh was
 
 The profile photograph is the previous Kaggle portrait, restored with the owner's confirmation and stored locally at `assets/portrait.png`. It does not require an external request when the page loads. Original source: `https://storage.googleapis.com/kaggle-avatars/images/6828784-kg.png?t=2024-10-09-17-14-20`.
 
+## Interactive library
+
+The `#library` section (04 / Interactive library) is an educational catalog of every browser lab published with GitHub Pages from the `D2718281828nis` repositories. Each entry has a topic, a one-line description taken from the lab's own page or README, the live lab link (with the Russian version where one exists) and its source repository. The labs are hosted by their source repositories; this site only links to them.
+
+| Lab | Topic | Live (EN) | Live (RU) | Source |
+| --- | --- | --- | --- | --- |
+| Kuramoto Propagation Explorer | Extreme events, graphs | [open](https://d2718281828nis.github.io/EVT-educational-demo/) | — | [EVT-educational-demo](https://github.com/D2718281828nis/EVT-educational-demo) |
+| Reservoir Computing Explainer | Time series, dynamics | [open](https://d2718281828nis.github.io/ML-Reservoir_Computing/) | [открыть](https://d2718281828nis.github.io/ML-Reservoir_Computing/ru/) | [ML-Reservoir_Computing](https://github.com/D2718281828nis/ML-Reservoir_Computing) |
+| From Text to Attention (GPT-2) | Language models | [open](https://d2718281828nis.github.io/ML-Transformers/) | [открыть](https://d2718281828nis.github.io/ML-Transformers/ru/) | [ML-Transformers](https://github.com/D2718281828nis/ML-Transformers/tree/main/explainer) |
+| Autoencoder Explainer | Representation learning | [open](https://d2718281828nis.github.io/ML-Transformers/autoencoders/) | [открыть](https://d2718281828nis.github.io/ML-Transformers/autoencoders/ru/) | [ML-Transformers](https://github.com/D2718281828nis/ML-Transformers/tree/main/explainer/autoencoders) |
+| From One Token to a Team of Agents | LLM agents | [open](https://d2718281828nis.github.io/LLM_AI_agents/explainer/) | [открыть](https://d2718281828nis.github.io/LLM_AI_agents/explainer/ru/) | [LLM_AI_agents](https://github.com/D2718281828nis/LLM_AI_agents) |
+| LLM AI Agents: 13 Lessons | LLM agents course | [open](https://d2718281828nis.github.io/LLM_AI_agents/) | — | [LLM_AI_agents](https://github.com/D2718281828nis/LLM_AI_agents) |
+
+The list was compiled on 2026-10-30 from the repositories that have GitHub Pages enabled; every link returned HTTP 200 on that date. `TAUforPython.github.io` is excluded because it only serves an unmodified blog template. To add a lab, append a `library-item` to the list in `index.html`, add a row here and update the expected count in `tests/portfolio.spec.js`.
+
 ## Habr writing
 
 The Articles navigation link leads to the Habr archive entry in the Research section. It points to the owner-supplied profile at [DenisDenisMIS on Habr](https://habr.com/ru/users/DenisDenisMIS/articles/). The archive link works without JavaScript and does not fetch external content while the portfolio loads.

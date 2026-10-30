@@ -32,7 +32,7 @@
   <header class="site-header">
     <a class="monogram" href="#top" aria-label="DA. — Denis Andrikov, home">DA<span>.</span></a>
     <nav class="site-nav" aria-label="Main navigation">
-      <a href="#projects">Work</a><a href="#work">Expertise</a><a href="#path">Path</a><a href="#writing">Research</a><a href="#articles">Articles</a>
+      <a href="#projects">Work</a><a href="#work">Expertise</a><a href="#library">Library</a><a href="#path">Path</a><a href="#writing">Research</a><a href="#articles">Articles</a>
     </nav>
     <button class="theme-toggle" type="button" hidden aria-label="Switch to dark theme" aria-pressed="false">
       <span aria-hidden="true">◐</span><span class="theme-label">Dark</span>
@@ -227,8 +227,76 @@
       </aside>
     </section>
 
+    <section class="library section" id="library" aria-labelledby="library-title">
+      <div class="section-heading reveal">
+        <p class="section-index">04 / Interactive library</p>
+        <h2 id="library-title">Learn by changing<br><em>the parameters.</em></h2>
+      </div>
+      <p class="library-intro reveal">Every lab runs in the browser and is published with GitHub Pages from its source repository. Open a lab, move a slider and compare the result with the notebooks behind it.</p>
+      <ol class="library-list reveal">
+        <li class="library-item" aria-labelledby="lib-evt">
+          <p class="library-topic">Extreme events · Graphs</p>
+          <h3 id="lib-evt">Kuramoto Propagation Explorer</h3>
+          <p>Tune 12 coupled Kuramoto oscillators and watch an injected noise burst spread from its source channel through phase coherence.</p>
+          <div class="library-links">
+            <a href="https://d2718281828nis.github.io/EVT-educational-demo/" target="_blank" rel="noopener">Open lab · EN <span aria-hidden="true">↗</span></a>
+            <a href="https://github.com/D2718281828nis/EVT-educational-demo" target="_blank" rel="noopener">Source <span aria-hidden="true">↗</span></a>
+          </div>
+        </li>
+        <li class="library-item" aria-labelledby="lib-reservoir">
+          <p class="library-topic">Time series · Dynamics</p>
+          <h3 id="lib-reservoir">Reservoir Computing Explainer</h3>
+          <p>Race feed-forward networks against echo state networks, liquid state machines and next-generation RC, all trained live in the page.</p>
+          <div class="library-links">
+            <a href="https://d2718281828nis.github.io/ML-Reservoir_Computing/" target="_blank" rel="noopener">Open lab · EN <span aria-hidden="true">↗</span></a>
+            <a href="https://d2718281828nis.github.io/ML-Reservoir_Computing/ru/" target="_blank" rel="noopener" hreflang="ru">RU <span aria-hidden="true">↗</span></a>
+            <a href="https://github.com/D2718281828nis/ML-Reservoir_Computing" target="_blank" rel="noopener">Source <span aria-hidden="true">↗</span></a>
+          </div>
+        </li>
+        <li class="library-item" aria-labelledby="lib-attention">
+          <p class="library-topic">Language models</p>
+          <h3 id="lib-attention">From Text to Attention</h3>
+          <p>Type a sentence and follow it through GPT-2: tokenization, embeddings, positional encoding and self-attention computed from the real weights.</p>
+          <div class="library-links">
+            <a href="https://d2718281828nis.github.io/ML-Transformers/" target="_blank" rel="noopener">Open lab · EN <span aria-hidden="true">↗</span></a>
+            <a href="https://d2718281828nis.github.io/ML-Transformers/ru/" target="_blank" rel="noopener" hreflang="ru">RU <span aria-hidden="true">↗</span></a>
+            <a href="https://github.com/D2718281828nis/ML-Transformers/tree/main/explainer" target="_blank" rel="noopener">Source <span aria-hidden="true">↗</span></a>
+          </div>
+        </li>
+        <li class="library-item" aria-labelledby="lib-autoencoder">
+          <p class="library-topic">Representation learning</p>
+          <h3 id="lib-autoencoder">Autoencoder Explainer</h3>
+          <p>From a one-dimensional bottleneck to digit embeddings, VAEs and probabilistic time-series forecasts.</p>
+          <div class="library-links">
+            <a href="https://d2718281828nis.github.io/ML-Transformers/autoencoders/" target="_blank" rel="noopener">Open lab · EN <span aria-hidden="true">↗</span></a>
+            <a href="https://d2718281828nis.github.io/ML-Transformers/autoencoders/ru/" target="_blank" rel="noopener" hreflang="ru">RU <span aria-hidden="true">↗</span></a>
+            <a href="https://github.com/D2718281828nis/ML-Transformers/tree/main/explainer/autoencoders" target="_blank" rel="noopener">Source <span aria-hidden="true">↗</span></a>
+          </div>
+        </li>
+        <li class="library-item" aria-labelledby="lib-agents">
+          <p class="library-topic">LLM agents</p>
+          <h3 id="lib-agents">From One Token to a Team of Agents</h3>
+          <p>Sampling, quantization, tools and MCP, Think-Act-Observe loops, memory, guardrails, RAG and HyDE, DSPy, critics and LLM-as-judge, computed in the browser.</p>
+          <div class="library-links">
+            <a href="https://d2718281828nis.github.io/LLM_AI_agents/explainer/" target="_blank" rel="noopener">Open lab · EN <span aria-hidden="true">↗</span></a>
+            <a href="https://d2718281828nis.github.io/LLM_AI_agents/explainer/ru/" target="_blank" rel="noopener" hreflang="ru">RU <span aria-hidden="true">↗</span></a>
+            <a href="https://github.com/D2718281828nis/LLM_AI_agents" target="_blank" rel="noopener">Source <span aria-hidden="true">↗</span></a>
+          </div>
+        </li>
+        <li class="library-item" aria-labelledby="lib-agents-course">
+          <p class="library-topic">LLM agents · Course</p>
+          <h3 id="lib-agents-course">LLM AI Agents: 13 Lessons</h3>
+          <p>A guided overview of the companion notebook course, from basic inference to MCP tools, RAG, DSPy and multi-agent systems.</p>
+          <div class="library-links">
+            <a href="https://d2718281828nis.github.io/LLM_AI_agents/" target="_blank" rel="noopener">Open course page · EN <span aria-hidden="true">↗</span></a>
+            <a href="https://github.com/D2718281828nis/LLM_AI_agents" target="_blank" rel="noopener">Notebooks <span aria-hidden="true">↗</span></a>
+          </div>
+        </li>
+      </ol>
+    </section>
+
     <section class="research section" id="writing" aria-labelledby="research-title">
-      <div class="section-heading reveal"><p class="section-index">04 / Research</p><h2 id="research-title">Selected <em>publications.</em></h2></div>
+      <div class="section-heading reveal"><p class="section-index">05 / Research</p><h2 id="research-title">Selected <em>publications.</em></h2></div>
       <!-- publications:start -->
       <div class="publication-list reveal">
         <a href="https://orcid.org/0000-0003-0359-0897" target="_blank" rel="noopener"><time datetime="2026">2026</time><div><h3>CNN interpretability framework discovers new epileptic biomarkers</h3><p class="publication-focus">Interpretable models and epileptic biomarkers.</p></div><p>International Journal of Neural Systems</p><span>↗</span></a>
@@ -254,7 +322,7 @@
     </section>
 
     <section class="contact section" aria-labelledby="contact-title">
-      <p class="section-index reveal">05 / Connect</p>
+      <p class="section-index reveal">06 / Connect</p>
       <h2 id="contact-title" class="reveal">Have a difficult problem?<br><em>Let's make it legible.</em></h2>
       <div class="social-links reveal"><a href="https://github.com/D2718281828nis" target="_blank" rel="noopener">GitHub ↗</a><a href="https://www.kaggle.com/denisandrikov" target="_blank" rel="noopener">Kaggle ↗</a><a href="https://www.linkedin.com/in/denis-andrikov-7202947/" target="_blank" rel="noopener">LinkedIn ↗</a><a href="https://orcid.org/0000-0003-0359-0897" target="_blank" rel="noopener">ORCID ↗</a></div>
     </section>
