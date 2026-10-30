@@ -105,7 +105,7 @@ test('interactive library lists every published lab with its source', async ({ p
   await page.locator('.site-nav a[href="#library"]').click();
   await expect(page.locator('#library-title')).toBeInViewport();
   const items = page.locator('.library-item');
-  await expect(items).toHaveCount(6);
+  await expect(items).toHaveCount(7);
   for (const item of await items.all()) {
     await expect(item.locator('a[href^="https://d2718281828nis.github.io/"]').first()).toBeVisible();
     await expect(item.locator('a[href^="https://github.com/D2718281828nis/"]')).toHaveCount(1);
