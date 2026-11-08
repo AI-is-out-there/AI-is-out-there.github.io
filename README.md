@@ -39,7 +39,7 @@ GitHub Pages can continue serving the repository root from the configured publis
 
 Project copy and links live in `index.html`; the full content is available to search engines without executing JavaScript. Each card describes the task, methods and something a visitor can explore. The control course, Stepik course and Bauman AI video library remain in the teaching-resources section. The contact section has no new contact actions or CV download.
 
-The profile highlights describe the six linked interactive labs (Graph-EVT guide, EVT propagation, reservoirs, attention, autoencoders and LLM agents), three expertise areas, and English/Russian learning resources. These replace unverified, changing publication/repository/playlist totals. Recount the linked labs if the selection changes.
+The profile highlights describe the seven linked interactive labs (Graph-EVT guide, EVT propagation, reservoirs, attention, autoencoders, overlay clustering and LLM agents), three expertise areas, and English/Russian learning resources. These replace unverified, changing publication/repository/playlist totals. Recount the linked labs if the selection changes.
 
 Publication titles and years are inherited from the previous site and still need confirmation against the public ORCID record. Refresh the selected entries with:
 
@@ -64,10 +64,11 @@ The `#library` section (04 / Interactive library) is an educational catalog of e
 | Reservoir Computing Explainer | Time series, dynamics | [open](https://d2718281828nis.github.io/ML-Reservoir_Computing/) | [открыть](https://d2718281828nis.github.io/ML-Reservoir_Computing/ru/) | [ML-Reservoir_Computing](https://github.com/D2718281828nis/ML-Reservoir_Computing) |
 | From Text to Attention (GPT-2) | Language models | [open](https://d2718281828nis.github.io/ML-Transformers/) | [открыть](https://d2718281828nis.github.io/ML-Transformers/ru/) | [ML-Transformers](https://github.com/D2718281828nis/ML-Transformers/tree/main/explainer) |
 | Autoencoder Explainer | Representation learning | [open](https://d2718281828nis.github.io/ML-Transformers/autoencoders/) | [открыть](https://d2718281828nis.github.io/ML-Transformers/autoencoders/ru/) | [ML-Transformers](https://github.com/D2718281828nis/ML-Transformers/tree/main/explainer/autoencoders) |
+| Overlay Clustering Lab | Machine learning, graphs | [open](https://d2718281828nis.github.io/ML-overlay-problem/?lang=en) | [открыть](https://d2718281828nis.github.io/ML-overlay-problem/?lang=ru) | [ML-overlay-problem](https://github.com/D2718281828nis/ML-overlay-problem) |
 | From One Token to a Team of Agents | LLM agents | [open](https://d2718281828nis.github.io/LLM_AI_agents/explainer/) | [открыть](https://d2718281828nis.github.io/LLM_AI_agents/explainer/ru/) | [LLM_AI_agents](https://github.com/D2718281828nis/LLM_AI_agents) |
 | LLM AI Agents: 13 Lessons | LLM agents course | [open](https://d2718281828nis.github.io/LLM_AI_agents/) | — | [LLM_AI_agents](https://github.com/D2718281828nis/LLM_AI_agents) |
 
-The list was compiled on 2026-10-30 from the repositories that have GitHub Pages enabled; every link returned HTTP 200 on that date. The Graph-EVT guide was added the same day; the EVT repository root now serves the guide and the Kuramoto explorer moved to `kuramoto/`. The guide selects Russian with `?lang=ru`. `TAUforPython.github.io` is excluded because it only serves an unmodified blog template. To add a lab, append a `library-item` to the list in `index.html`, add a row here and update the expected count in `tests/portfolio.spec.js`.
+The list was compiled on 2026-10-30 from the repositories that have GitHub Pages enabled; every link returned HTTP 200 on that date. The Graph-EVT guide was added the same day; the EVT repository root now serves the guide and the Kuramoto explorer moved to `kuramoto/`. The guide selects Russian with `?lang=ru`. The Overlay Clustering Lab was added on 2026-11-08 (both language links returned HTTP 200); it selects the language with `?lang=en|ru`. `TAUforPython.github.io` is excluded because it only serves an unmodified blog template. To add a lab, append a `library-item` to the list in `index.html`, add a row here and update the expected count in `tests/portfolio.spec.js`.
 
 ## Habr writing
 
