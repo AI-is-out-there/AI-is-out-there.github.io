@@ -1,6 +1,6 @@
 # Denis Andrikov — research, code and interactive learning
 
-A static portfolio for biomedical AI, control systems and open education. The site uses HTML, CSS and JavaScript, with local fonts and illustrations. It has no runtime package dependencies or build step. All expertise panels and projects remain readable without JavaScript; JavaScript adds theme selection, accessible tabs and project filters.
+A static portfolio for biomedical AI, control systems and open education. The site uses HTML, CSS and JavaScript, with local fonts and illustrations. It has no runtime package dependencies or build step. All expertise panels and projects remain readable without JavaScript; JavaScript adds theme selection, an English/Russian checkbox with a saved preference, accessible tabs and project filters.
 
 ## Local development
 
@@ -29,7 +29,7 @@ If Chromium is already installed, use it without downloading another browser:
 PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH=/usr/bin/chromium npm test
 ```
 
-Playwright starts its own server on port 8765. The tests cover themes, blocked storage, keyboard tabs, filters, no-JavaScript content, reduced motion, mobile overflow and automated WCAG checks in both themes. External requests are blocked during tests, so the portfolio must work entirely from its own assets. The tests do not validate the external educational applications or establish full accessibility conformance.
+Playwright starts its own server on port 8765. The tests cover themes, Russian translation and persistence, blocked storage, keyboard tabs, filters, no-JavaScript content, reduced motion, mobile overflow and automated WCAG checks in both themes and in Russian. External requests are blocked during tests, so the portfolio must work entirely from its own assets. The tests do not validate the external educational applications or establish full accessibility conformance.
 
 `npm run check` also validates local assets, fragment and ARIA references, SVG syntax, JavaScript syntax, and citation-selection failure cases. The `Site checks` GitHub Actions workflow runs these checks and browser tests on pushes and pull requests. Failure artifacts are retained for seven days.
 

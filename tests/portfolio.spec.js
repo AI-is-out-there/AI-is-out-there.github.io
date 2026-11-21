@@ -62,6 +62,8 @@ for (const operation of ['getItem', 'setItem']) {
     await expect(page.locator('#panel-education')).toBeVisible();
     await page.getByRole('button', { name: 'AI & signals', exact: true }).click();
     await expect(page.locator('.project-card:visible')).toHaveCount(2);
+    await page.getByRole('checkbox', { name: 'Use Russian' }).check();
+    await expect(page.locator('html')).toHaveAttribute('lang', 'ru');
     expect(errors).toEqual([]);
   });
 }
@@ -120,6 +122,7 @@ test('content and all expertise areas remain readable without JavaScript', async
   for (const panel of ['biomed', 'control', 'education']) await expect(page.locator(`#panel-${panel}`)).toBeVisible();
   await expect(page.locator('.project-card')).toHaveCount(5);
   await expect(page.locator('.theme-toggle')).toBeHidden();
+  await expect(page.locator('.language-control')).toBeHidden();
   await expect(page.locator('.project-filter')).toBeHidden();
   await context.close();
 });
@@ -163,3 +166,42 @@ for (const scheme of ['light', 'dark']) {
     });
   }
 }
+
+
+test('Russian checkbox translates content and controls, persists, and restores English', async ({ page }) => {
+  await page.goto('/');
+  const toggle = page.getByRole('checkbox', { name: 'Use Russian' });
+  await expect(toggle).toBeVisible();
+  await toggle.check();
+  await expect(page.locator('html')).toHaveAttribute('lang', 'ru');
+  await expect(page.locator('#hero-title')).toContainText('Превращаю сложные сигналы');
+  await expect(page.locator('meta[name="description"]')).toHaveAttribute('content', /Денис Андриков/);
+  await expect(page.getByRole('button', { name: 'Переключить: Тёмная тема' })).toBeVisible();
+  await page.getByRole('button', { name: 'ИИ и сигналы', exact: true }).click();
+  await expect(page.locator('.project-card:visible')).toHaveCount(2);
+  await expect(page.getByRole('status')).toHaveText('Показано: 2 проекта');
+  await page.reload();
+  await expect(page.getByRole('checkbox', { name: 'Использовать русский язык' })).toBeChecked();
+  await expect(page.getByRole('status')).toHaveText('Показано: 5 проектов');
+  for (const width of [1440, 1024, 821, 820, 390, 320]) {
+    await page.setViewportSize({ width, height: 900 });
+    await expect(page.locator('.site-nav')).toBeVisible();
+    expect(await page.evaluate(() => document.documentElement.scrollWidth), `Russian overflow at ${width}px`).toBeLessThanOrEqual(width);
+  }
+  await page.getByRole('checkbox', { name: 'Использовать русский язык' }).uncheck();
+  await expect(page.locator('html')).toHaveAttribute('lang', 'en');
+  await expect(page.locator('#hero-title')).toContainText('I turn complex signals');
+  await expect(page.getByRole('status')).toHaveText('5 projects shown');
+});
+
+test('Russian interface passes accessibility checks on desktop and mobile', async ({ page }) => {
+  await page.emulateMedia({ colorScheme: 'light', reducedMotion: 'reduce' });
+  await page.goto('/');
+  await page.getByRole('checkbox', { name: 'Use Russian' }).check();
+  for (const width of [1440, 390]) {
+    await page.setViewportSize({ width, height: 900 });
+    await page.evaluate(() => document.fonts.ready);
+    const results = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa']).analyze();
+    expect(results.violations.map(issue => ({ id: issue.id, nodes: issue.nodes.map(node => ({ target: node.target, summary: node.failureSummary })) }))).toEqual([]);
+  }
+});
